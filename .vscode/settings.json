@@ -20,7 +20,7 @@
             "askForPassword": true,
             "driver": "MySQL",
             "name": "mysql1",
-            "database": "sql_store",
+            "database": "optica_cul_ampolla",
             "username": "root"
         }
     ]
