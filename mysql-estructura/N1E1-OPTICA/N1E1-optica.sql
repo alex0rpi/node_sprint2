@@ -101,13 +101,8 @@ SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND `data_venda` <= '2022-1
 -- *Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
 -- Entenc que he de fer INNER JOIN entre la taula proveidors i vendes
 
-CREATE TABLE proveïdors_vendes (
-    ulleres_id INT REFERENCES ulleres ON DELETE CASCADE,
-    proveidor_id INT REFERENCES proveïdors ON DELETE CASCADE,
-    PRIMARY KEY(ulleres_id, proveidor_id)
-);
-
-SELECT proveïdors.nom_proveïdor, proveïdors.proveidor_id
-FROM proveïdors
-INNER JOIN proveïdors ON ulleres.ulleres_id;
+SELECT ulleres.nom_proveïdor, vendes.marca_venuda
+FROM vendes
+INNER JOIN ulleres ON ulleres.marca = vendes.marca_venuda;
+-- Funciona però ho he de revisar
 
