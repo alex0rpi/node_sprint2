@@ -1,4 +1,5 @@
 DROP DATABASE pizzeria;
+USE 2.1Nivell1;
 CREATE SCHEMA IF NOT EXISTS pizzeria;
 USE pizzeria;
 -- *--------------------------------------------------------------------------------------------

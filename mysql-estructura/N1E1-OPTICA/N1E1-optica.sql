@@ -1,5 +1,5 @@
--- DROP DATABASE optica_cul_ampolla;
--- CREATE SCHEMA IF NOT EXISTS optica_cul_ampolla;
+DROP DATABASE optica_cul_ampolla;
+CREATE SCHEMA IF NOT EXISTS optica_cul_ampolla;
 USE optica_cul_ampolla;
 -- -- *--------------------------------------------------------------------------------------------
 -- -- *QUERIES per ESBORRAR les taules en cas necessari
@@ -42,17 +42,17 @@ CREATE TABLE clients (
     data_registre TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- *--------------------------------------------------------------------------------------------
-CREATE TABLE vendes (
+CREATE TABLE vendes(
     venda_id SERIAL PRIMARY KEY,
     empleat_venedor VARCHAR(100) NOT NULL,
     data_venda DATE NOT NULL,
     marca_venuda VARCHAR(100) REFERENCES ulleres(marca) ON DELETE CASCADE,
-    client VARCHAR(100) REFERENCES clients(nom)
+    nom_client VARCHAR(100) REFERENCES clients(nom)
 );
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES per poblar les taules
 -- *--------------------------------------------------------------------------------------------
-INSERT INTO vendes (empleat_venedor, data_venda, marca_venuda, client)
+INSERT INTO vendes (empleat_venedor, data_venda, marca_venuda, nom_client)
 VALUES
     ("Mario", '2022-11-10', "TomFord", "Mercuri"),
     ("Mario", '2023-10-09', "Vogue", "Venus"),
@@ -87,22 +87,38 @@ VALUES
     ("Charly", "Vogue", "-4,-3.5", "flotant", "coral", "platejat", 190.99),
     ("Delta", "Emporio", "-3.5,-3.5", "metàl·lica", "sepia", "negre", 50.99),
     ("Delta", "Emporio", "-3.5,-3.5", "flotant", "taronja", "negre", 60.99),
-    ("Echo", "Reebock", "-8.5,-2.5", "pasta", "negre", "negre", 60.99),
+    ("Echo", "Reebok", "-8.5,-2.5", "pasta", "negre", "negre", 60.99),
     ("Echo", "Reebock", "-1.5,-0.5", "flotant", "blanc", "negre", 60.99);
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
 -- *Llista el total de compres d’un client/a.
-SELECT * FROM vendes WHERE client="venus" ORDER BY empleat_venedor ASC;
+SELECT * FROM vendes WHERE nom_client="venus" ORDER BY empleat_venedor ASC;
 
 -- *Llista les diferents ulleres que ha venut un empleat durant un any.
-SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND `data_venda` <= '2022-12-31';
+SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND data_venda <= '2022-12-31';
 
 -- *Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
 -- Entenc que he de fer INNER JOIN entre la taula proveidors i vendes
 
-SELECT ulleres.nom_proveïdor, vendes.marca_venuda
-FROM vendes
-INNER JOIN ulleres ON ulleres.marca = vendes.marca_venuda;
--- Funciona però ho he de revisar
+SELECT DISTINCT nom_proveïdor, marca_venuda
+-- DISTINCT elimina duplicats
+-- Realitzem unió entre la taula vendes i ulleres sota el criteri estipulat a la keyword ON
+FROM vendes v
+INNER JOIN ulleres u
+ON u.marca = v.marca_venuda;
+-- Es llisten tots els proveïdors les ulleres dels quals figuren en vendes. 
+-- No hi figura el proeïdor "Echo" car d'ell no s'ha venut cap ullera (marca Reebok)
 
+-- *Les comandes següents són d'ús didàctic propi (SELF JOINS)
+-- Comprovar quins clients han estat recomanats i per qui ⬇⬇
+SELECT cl.nom, cl.client_recomanador
+FROM clients cl
+JOIN clients cli
+    ON cl.client_recomanador = cli.nom;
+
+-- Comprovar quins clients han estat recomanadors i quin client han aportat ⬇⬇
+SELECT cl.nom, cli.nom AS client_aportat
+FROM clients cl
+JOIN clients cli
+    ON cl.nom = cli.client_recomanador;
