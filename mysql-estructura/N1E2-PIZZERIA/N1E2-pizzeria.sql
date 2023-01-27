@@ -1,5 +1,5 @@
 DROP DATABASE pizzeria;
-USE 2.1Nivell1;
+USE pizzeria;
 CREATE SCHEMA IF NOT EXISTS pizzeria;
 USE pizzeria;
 -- *--------------------------------------------------------------------------------------------
@@ -87,10 +87,20 @@ CREATE TABLE IF NOT EXISTS begudes (
 
 
 
-
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
-
 -- *Llista quants productes de tipus "Begudes" s'han venut en una determinada localitat.
+-- clients i comandes
+-- Un número, un nom de localitat
+-- Cal esbrinar QUINS clients pertanyen a una determinada localitat
+-- Cal realitzar SUMA de num_begudes en cada comanda d'aquests clients d'aquesta localitat
+
+SELECT comandes.num_begudes
+FROM SELECT nom_client FROM clients WHERE localitat="Hospitalet";
+JOIN SELECT comandes.num_begudes
+    ON cli.nom_client = com.nom_client;
+
+
+
 -- *Llista quantes comandes ha efectuat un determinat empleat.
