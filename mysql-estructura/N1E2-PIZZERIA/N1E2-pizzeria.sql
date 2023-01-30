@@ -147,19 +147,13 @@ VALUES
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
 -- *Llista quants productes de tipus "Begudes" s'han venut en una determinada localitat.
-SELECT SUM(num_begudes) AS total_begudes
-FROM 
-    comandes co
-INNER JOIN
-    (SELECT * FROM clients cli WHERE localitat = "Hospitalet") cli
-    ON cli.nom_client = co.nom_client;
+SELECT SUM(num_begudes) AS total_begudes FROM comandes co INNER JOIN (SELECT * FROM clients cli WHERE localitat = "Hospitalet") cli ON cli.nom_client = co.nom_client;
 
 -- Número de localitats diferents on hi ha clients
 -- SELECT COUNT(DISTINCT localitat) from clients;
 
 -- Número clients en una determinada localitat
 -- SELECT COUNT(nom_client) FROM clients WHERE localitat = "Hospitalet";
-
 
 -- *Llista quantes comandes ha efectuat un determinat empleat.
 /* Entenc que ha de tractar-se d'un empleat repartidor, ja que només emmagatzemo el nom del 

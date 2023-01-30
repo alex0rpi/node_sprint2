@@ -101,24 +101,15 @@ SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND data_venda <= '2022-12-
 -- *Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
 -- Entenc que he de fer INNER JOIN entre la taula proveidors i vendes
 
-SELECT DISTINCT nom_proveïdor, marca_venuda
+SELECT DISTINCT nom_proveïdor, marca_venuda FROM vendes v INNER JOIN ulleres u ON u.marca = v.marca_venuda;
 -- DISTINCT elimina duplicats
 -- Realitzem unió entre la taula vendes i ulleres sota el criteri estipulat a la keyword ON
-FROM vendes v
-INNER JOIN ulleres u
-ON u.marca = v.marca_venuda;
 -- Es llisten tots els proveïdors les ulleres dels quals figuren en vendes. 
 -- No hi figura el proeïdor "Echo" car d'ell no s'ha venut cap ullera (marca Reebok)
 
 -- *Les comandes següents són d'ús didàctic propi (SELF JOINS)
 -- Comprovar quins clients han estat recomanats i per qui ⬇⬇
-SELECT cl.nom, cl.client_recomanador
-FROM clients cl
-JOIN clients cli
-    ON cl.client_recomanador = cli.nom;
+SELECT cl.nom, cl.client_recomanador FROM clients cl JOIN clients cli ON cl.client_recomanador = cli.nom;
 
 -- Comprovar quins clients han estat recomanadors i quin client han aportat ⬇⬇
-SELECT cl.nom, cli.nom AS client_aportat
-FROM clients cl
-JOIN clients cli
-    ON cl.nom = cli.client_recomanador;
+SELECT cl.nom, cli.nom AS client_aportat FROM clients cl JOIN clients cli ON cl.nom = cli.client_recomanador;
