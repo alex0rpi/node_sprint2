@@ -11,13 +11,13 @@ DROP TABLE videos;
 -- *-------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS usuaris (
     ususari_id SERIAL PRIMARY KEY,
-    nom_usuari VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
+    nom_usuari VARCHAR(100) NOT NULL,
     data_naixement DATE NOT NULL,
     sexe ENUM('femení', 'masculí', 'no_binari') NOT NULL,
     pais VARCHAR(50) NOT NULL,
-    codi_postal VARCHAR(100) NOT NULL,
+    codi_postal VARCHAR(100) NOT NULL
 );
 CREATE TABLE etiquetes (
     tag_id SERIAL PRIMARY KEY,
@@ -45,13 +45,12 @@ CREATE TABLE videos (
     reproduccions INT NOT NULL,
     likes INT NOT NULL,
     dislikes INT NOT NULL,
-    estat ENUM('public', 'ocult', 'privat') NOT NULL,
-    comentaris JSON DEFAULT ('[""]')
+    estat ENUM('public', 'ocult', 'privat') NOT NULL
 );
 CREATE TABLE playlists (
     playlist_id SERIAL PRIMARY KEY,
     nom_playlist VARCHAR(100) NOT NULL,
-    user_playlist INT REFERENCES usuaris(ususari_id) ON DELETE CASCADE
+    user_playlist INT REFERENCES usuaris(ususari_id) ON DELETE CASCADE,
     data_creacio DATE NOT NULL,
     estat ENUM('PUBLICA', 'PRIVADA')
 );
@@ -60,20 +59,73 @@ CREATE TABLE comentaris (
     usuari VARCHAR(100) REFERENCES usuaris(nom_usuari) ON DELETE CASCADE,
     video_id INT REFERENCES videos(video_id),
     `text` VARCHAR(500) NOT NULL,
-    data_hora_coment DATETIME NOT NULL,
+    data_hora_coment DATETIME NOT NULL
 );
--- *-------------------------------------------------------------
--- *QUERIES per poblar les taules
--- *-------------------------------------------------------------
-INSERT INTO comandes (nom_client, data_hora, modalitat, num_pizzes, num_hamburg, num_begudes, preu_total, botiga, repartidor, hora_repartiment)
-VALUES
-    ("Mario", "2023-01-01 22:10:10", "repartiment", 2, 0, 1, 20.00, 1, "James", "11:00:00"),
--- *-------------------------------------------------------------
--- *QUERIES de comprovació
--- *-------------------------------------------------------------
--- *
-SELECT SUM(num_begudes) AS total_begudes FROM comandes co INNER JOIN(SELECT * FROM clients cli WHERE localitat = "Hospitalet") cli ON cli.nom_client = co.nom_client;
--- *
-SELECT COUNT(comanda_id) FROM comandes WHERE repartidor = "Peppy";
 
+-- *----------------------------------------
+-- *Taules intermitges ⬇ ⬇ ⬇ ⬇ ⬇
+-- *----------------------------------------
 
+CREATE TABLE likes (
+    video_id INT REFERENCES videos ON DELETE CASCADE,
+    user_id INT REFERENCES usuaris ON DELETE CASCADE,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(video_id, user_id)
+);
+CREATE TABLE dislikes (
+    video_id INT REFERENCES videos ON DELETE CASCADE,
+    user_id INT REFERENCES usuaris ON DELETE CASCADE,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(video_id, user_id)
+);
+CREATE TABLE magrada (
+    coment_id INT REFERENCES comentaris ON DELETE CASCADE,
+    user_id INT REFERENCES usuaris ON DELETE CASCADE,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(coment_id, user_id)
+);
+CREATE TABLE no_magrada (
+    coment_id INT REFERENCES comentaris ON DELETE CASCADE,
+    user_id INT REFERENCES usuaris ON DELETE CASCADE,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(coment_id, user_id)
+);
+CREATE TABLES suscripcions (
+    canal_id INT REFERENCES canals,
+    usuari_id INT REFERENCES usuaris,
+    PRIMARY KEY(canal_id, usuari_id)
+);
+
+/* 
+➡ Cada "like"/"dislike" pot tenir un identificador únic
+ compost pel (video_id i l'usuari_id).
+➡ De la mateixa manera, cada "m'agrada" o "no m'agrada"
+ pot tenir un identificador únic compost per:
+ (coment_id, user_id).
+➡ Quan llegeixo "portar un registre" interpreto que he d'unir taules.
+ */
+
+-- *----------------------------------------
+-- *Algunes queries de comprovació
+-- *----------------------------------------
+
+-- *Seleccionar tots els videos a on un usuari ha comentat
+ SELECT co.coment_id, co.video_id, co.data_hora_coment
+ FROM comentaris co
+ JOIN 
+    (SELECT * FROM usuaris WHERE nom_usuari = "pepito") usu
+    ON co.usuari = usu.nom_usuari;
+
+-- *Seleccionar tots els videos a on un usuari ha fet like
+ SELECT v.titol, l.data_hora
+ FROM (SELECT * FROM usuaris WHERE nom_usuari = "pepito") u
+ JOIN likes l
+    ON l.user_id = u.ususari_id
+    JOIN videos v
+        ON v.video_id = l.video_id;
+    
+-- *Seleccionar tots els CANALS a on un usuari està suscrit
+SELECT *
+FROM (SELECT * FROM suscripcions WHERE ) sus
+JOIN usuaris usu
+    ON 
