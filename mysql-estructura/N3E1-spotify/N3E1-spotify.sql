@@ -10,51 +10,63 @@ DROP TABLE videos;
 -- *QUERIES per crear les taules
 -- *--------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS usuaris (
-    ususari_id SERIAL PRIMARY KEY,
-    nom_usuari VARCHAR(100) NOT NULL,
+    usuari_id SERIAL PRIMARY KEY,
+    tipus_user ENUM('free', 'premium'),
     email VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
+    nom_usuari VARCHAR(100) NOT NULL,
     data_naixement DATE NOT NULL,
     sexe ENUM('femení', 'masculí', 'no_binari') NOT NULL,
     pais VARCHAR(50) NOT NULL,
     codi_postal VARCHAR(100) NOT NULL
 );
-CREATE TABLE etiquetes (
-    tag_id SERIAL PRIMARY KEY,
-    nom_tag VARCHAR(50) NOT NULL
+CREATE TABLE targetes_credit(
+    tarjeta_user_id INT REFERENCES usuaris,
+    numero_tarjeta INT NOT NULL,
+    mes_caducitat INT, 
+    any_caducitat INT, 
+    codi_seguretat INT(3) NOT NULL,
+    CHECK (mes_caducitat >=1), CHECK (mes_caducitat <= 12)
+    -- No aconsegueixo fer el check del year >= any actual
 );
 
-CREATE TABLE videos (
-    video_is SERIAL PRIMARY KEY,
+CREATE TABLE paypals (
+    paypal_user_id INT REFERENCES usuaris,
+    paypal_username VARCHAR(100)
+);
+
+CREATE TABLE suscripcions (
+    premium_user INT REFERENCES usuaris(usuari_id),
+    data_inici DATE NOT NULL,
+    data_renovacio DATE NOT NULL,
+    forma_pagament ENUM('targeta de credit', 'paypal'),
+    targeta_credit INT REFERENCES targetes_credit(numero_tarjeta)
+);
+
+-- Taula de paagaments (intermitja?)
+CREATE TABLE pagaments(
+    payment_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES usuaris,
+    payment_date DATE NOT NULL,
+    total FLOAT(5,2) NOT NULL
+);
+
+CREATE TABLE playlists(
+    playlist_id SERIAL PRIMARY KEY,
+    creador INT REFERENCES usuaris ON DELETE,
     titol VARCHAR(100) NOT NULL,
-    descripcio VARCHAR(500) NOT NULL,
-    usuari_video VARCHAR(100) REFERENCES usuaris(nom_usuari),
-    tags SET('') NOT NULL,
-    -- Afegir FOREIGN KEY als tags? ES UN SET O UNA STRING?
-    data_hora DATETIME NOT NULL,
-    grandaria INT NOT NULL,
-    nom_arxiu VARCHAR(100) NOT NULL,
-    durada TIME,
-    thumbnail BLOB,
-    reproduccions INT NOT NULL,
-    likes INT NOT NULL,
-    dislikes INT NOT NULL,
-    estat ENUM('public', 'ocult', 'privat') NOT NULL
+    num_cançons INT NOT NULL,
+    data_creacio DATE,
+    type ENUM('ACTIVA', 'ESBORRADA')
 );
 
-CREATE TABLE canals (
-    canal_id SERIAL PRIMARY KEY,
-    usuari_canal VARCHAR(100) REFERENCES usuaris(nom_usuari),
-    nom_canal VARCHAR(100) NOT NULL,
-    descripcio VARCHAR(500) NOT NULL,
-    data_creacio DATE NOT NULL
-)
--- *--------------------------------------------------------------------------------------------
--- *QUERIES per poblar les taules
--- *--------------------------------------------------------------------------------------------
-INSERT INTO comandes (nom_client, data_hora, modalitat, num_pizzes, num_hamburg, num_begudes, preu_total, botiga, repartidor, hora_repartiment)
-VALUES
-    ("Mario", "2023-01-01 22:10:10", "repartiment", 2, 0, 1, 20.00, 1, "James", "11:00:00"),
+CREATE TABLE deleted_playlists(
+    play_id INT REFERENCES playlists,
+    user_id INT REFERENCES usuaris,
+    date_deleted DATE NOT NULL,
+    PRIMARY KEY(play_id, user_id)
+);
+
 
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES de comprovació
