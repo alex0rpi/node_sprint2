@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS botigues (
     provincia VARCHAR(50) NOT NULL
 );
 
-
 CREATE TABLE IF NOT EXISTS empleats (
     empleat_id SERIAL PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -58,18 +57,6 @@ CREATE TABLE IF NOT EXISTS comandes (
     repartidor VARCHAR(100) REFERENCES empleats(nom) ON DELETE CASCADE,
     hora_repartiment TIME NOT NULL
 );
-INSERT INTO comandes (nom_client, data_hora, modalitat, num_pizzes, num_hamburg, num_begudes, preu_total, botiga, repartidor, hora_repartiment)
-VALUES
-    ("Mario", "2023-01-01 10:10:10", "repartiment", 2, 0, 1, 20.00, 1, "James", "11:00:00"),
-    ("Mario", "2023-01-01 10:10:10", "recollida", 0, 1, 2, 20.00, 1, null, "11:00:00"),
-    ("Mario", "2023-01-01 10:10:10", "recollida", 1, 1, 2, 20.00, 1, null, "11:00:00"),
-    ("Luigi", "2023-01-01 10:10:10", "domicili", 2, 0, 3, 20.00, 2, null, "11:00:00"),
-    ("Toad", "2023-01-01 10:10:10", "repartiment", 2, 1, 3, 20.00, 2, "Peppy", "11:00:00"),
-    ("Toad", "2023-01-01 10:10:10", "repartiment", 2, 2, 1, 20.00, 2, "Peppy", "11:00:00"),
-    ("Bowser", "2023-01-01 10:10:10", "recollida", 4, 0, 6, 20.00, 3, null, "11:00:00"),
-    ("Bowser", "2023-01-01 10:10:10", "domicili", 3, 0, 2, 20.00, 3, null, "11:00:00"),
-    ("Goomba", "2023-01-01 10:10:10", "recollida", 0, 1, 1, 20.00, 3, null, "11:00:00"),
-    ("Turtle", "2023-01-01 10:10:10", "repartiment", 0, 3, 3, 20.00, 3, "Rob", "11:00:00");
 CREATE TABLE IF NOT EXISTS categories (
     categoria_id SERIAL PRIMARY KEY,
     nom_categoria VARCHAR(20) NOT NULL
@@ -100,6 +87,18 @@ CREATE TABLE IF NOT EXISTS begudes (
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES per poblar les taules
 -- *--------------------------------------------------------------------------------------------
+INSERT INTO comandes (nom_client, data_hora, modalitat, num_pizzes, num_hamburg, num_begudes, preu_total, botiga, repartidor, hora_repartiment)
+VALUES
+    ("Mario", "2023-01-01 22:10:10", "repartiment", 2, 0, 1, 20.00, 1, "James", "11:00:00"),
+    ("Mario", "2023-01-02 21:10:10", "recollida", 0, 1, 2, 20.00, 1, null, "11:00:00"),
+    ("Mario", "2023-01-03 20:10:10", "recollida", 1, 1, 2, 20.00, 1, null, "11:00:00"),
+    ("Luigi", "2023-01-04 19:10:10", "domicili", 2, 0, 3, 20.00, 2, null, "11:00:00"),
+    ("Toad", "2023-01-04 20:10:10", "repartiment", 2, 1, 3, 20.00, 2, "Peppy", "11:00:00"),
+    ("Toad", "2023-01-02 20:10:10", "repartiment", 2, 2, 1, 20.00, 2, "Peppy", "11:00:00"),
+    ("Bowser", "2023-01-04 18:10:10", "recollida", 4, 0, 6, 20.00, 3, null, "11:00:00"),
+    ("Bowser", "2023-01-05 21:10:10", "domicili", 3, 0, 2, 20.00, 3, null, "11:00:00"),
+    ("Goomba", "2023-01-02 20:30:10", "recollida", 0, 1, 1, 20.00, 3, null, "11:00:00"),
+    ("Turtle", "2023-01-03 21:30:10", "repartiment", 0, 3, 3, 20.00, 3, "Rob", "11:00:00");
 INSERT INTO clients (nom_client, cognoms_client, adreça, codi_postal, localitat, provincia, telefon)
 VALUES
     ("Mario", "Kart", "Acorn Plains 2", "08019", "Hospitalet", "BCN", "999999999"),
@@ -148,20 +147,26 @@ VALUES
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
 -- *Llista quants productes de tipus "Begudes" s'han venut en una determinada localitat.
--- clients i comandes
--- Un número, un nom de localitat
--- Cal esbrinar QUINS clients pertanyen a una determinada localitat
--- Cal realitzar SUMA de num_begudes en cada comanda d'aquests clients d'aquesta localitat
-
-SELECT comandes.num_begudes
-FROM SELECT nom_client FROM clients WHERE localitat="Hospitalet";
-JOIN SELECT comandes.num_begudes
-    ON cli.nom_client = com.nom_client;
+SELECT SUM(num_begudes) AS total_begudes
+FROM 
+    comandes co
+INNER JOIN
+    (SELECT * FROM clients cli WHERE localitat = "Hospitalet") cli
+    ON cli.nom_client = co.nom_client;
 
 -- Número de localitats diferents on hi ha clients
-SELECT COUNT(DISTINCT localitat) from clients;
+-- SELECT COUNT(DISTINCT localitat) from clients;
 
 -- Número clients en una determinada localitat
-SELECT COUNT(nom_client) FROM clients WHERE localitat = "Hospitalet"
+-- SELECT COUNT(nom_client) FROM clients WHERE localitat = "Hospitalet";
+
 
 -- *Llista quantes comandes ha efectuat un determinat empleat.
+/* Entenc que ha de tractar-se d'un empleat repartidor, ja que només emmagatzemo el nom del 
+repartidor quan es tracta d'una comanda de lliurament a domicili. */
+SELECT COUNT(comanda_id) FROM comandes WHERE repartidor = "Peppy";
+
+-- Script per saber QUINES COMANDES
+-- SELECT comanda_id FROM comandes WHERE repartidor = "Peppy";
+-- Script per saber QUANTES ha efectuat (la suma)
+
