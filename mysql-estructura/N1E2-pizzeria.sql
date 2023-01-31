@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS comandes (
     num_pizzes INT,
     num_hamburg INT,
     num_begudes INT,
-    preu_total FLOAT(5, 2) NOT NULL,
+    preu_total NUMERIC(5, 2) NOT NULL,
     botiga VARCHAR(20) REFERENCES botigues ON DELETE CASCADE,
     repartidor VARCHAR(100) REFERENCES empleats(nom) ON DELETE CASCADE,
     hora_repartiment TIME NOT NULL
@@ -66,23 +66,23 @@ CREATE TABLE pizzes (
     nom VARCHAR(50) NOT NULL,
     descricio VARCHAR(200) NOT NULL,
     categoria VARCHAR(20) REFERENCES categories(nom) ON DELETE CASCADE,
-    imatge MEDIUMBLOB,
-    preu FLOAT(5,2) NOT NULL
+    imatge VARCHAR(200), /*'c/users/formacio/documents/imaatges/etc.'*/
+    preu NUMERIC(5,2) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS hamburgueses (
     hamburgueses_id SERIAL PRIMARY KEY,
     nom VARCHAR(50) NOT NULL,
     descripcio VARCHAR(200) NOT NULL,
-    imatge MEDIUMBLOB,
-    preu FLOAT(5, 2) NOT NULL
+    imatge VARCHAR(200),
+    preu NUMERIC(5, 2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS begudes (
     begudes_id SERIAL PRIMARY KEY,
     nom VARCHAR(50) NOT NULL,
     descripcio VARCHAR(200) NOT NULL,
-    imatge MEDIUMBLOB,
-    preu FLOAT(5, 2) NOT NULL
+    imatge VARCHAR(200),
+    preu NUMERIC(5, 2) NOT NULL
 );
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES per poblar les taules

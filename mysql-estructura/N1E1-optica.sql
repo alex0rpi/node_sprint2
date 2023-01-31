@@ -28,7 +28,7 @@ CREATE TABLE ulleres (
     tipus_muntura ENUM('flotant', 'pasta', 'metàl·lica') NOT NULL,
     color_muntura VARCHAR(50) NOT NULL,
     color_vidres VARCHAR(50) NOT NULL,
-    preu FLOAT(5,2) NOT NULL
+    preu NUMERIC(5,2) NOT NULL
 );
 -- *--------------------------------------------------------------------------------------------
 CREATE TABLE clients (
