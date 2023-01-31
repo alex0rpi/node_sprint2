@@ -1,3 +1,4 @@
+-- Active: 1675178991360@@127.0.0.1@3306@tienda
 DROP DATABASE IF EXISTS tienda;
 CREATE DATABASE tienda CHARACTER SET utf8mb4;
 USE tienda;

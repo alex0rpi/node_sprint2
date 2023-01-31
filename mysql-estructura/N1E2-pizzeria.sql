@@ -149,7 +149,7 @@ VALUES
 -- *Llista quants productes de tipus "Begudes" s'han venut en una determinada localitat.
 SELECT SUM(num_begudes) AS total_begudes
 FROM comandes co
-INNER JOIN 
+JOIN 
     (SELECT * FROM clients cli WHERE localitat = "Hospitalet") cli
     ON cli.nom_client = co.nom_client;
 

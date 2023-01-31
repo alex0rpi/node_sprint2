@@ -101,7 +101,7 @@ SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND data_venda <= '2022-12-
 -- *Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
 -- Entenc que he de fer INNER JOIN entre la taula proveidors i vendes
 
-SELECT DISTINCT nom_proveïdor, marca_venuda FROM vendes v INNER JOIN ulleres u ON u.marca = v.marca_venuda;
+SELECT DISTINCT nom_proveïdor, marca_venuda FROM vendes v JOIN ulleres u ON u.marca = v.marca_venuda;
 -- DISTINCT elimina duplicats
 -- Realitzem unió entre la taula vendes i ulleres sota el criteri estipulat a la keyword ON
 -- Es llisten tots els proveïdors les ulleres dels quals figuren en vendes. 

@@ -1,4 +1,4 @@
--- Active: 1675153068653@@127.0.0.1@3306@tienda
+-- Active: 1675178991360@@127.0.0.1@3306@tienda
 SELECT nombre FROM producto;
 SELECT nombre, precio FROM producto;
 SELECT nombre, precio, ROUND(precio*1.05, 2) AS precio_en_$ FROM producto;
@@ -32,4 +32,10 @@ SELECT prod.nombre AS producto, prod.precio, fab.nombre FROM producto prod JOIN 
 SELECT prod.nombre AS producto, prod.precio, fab.nombre AS fabricante FROM (SELECT * FROM producto WHERE precio >= 180) prod JOIN fabricante fab ON prod.codigo_fabricante = fab.codigo ORDER BY prod.precio DESC, prod.nombre ASC;
 SELECT fab.codigo AS codi_fabricant, fab.nombre AS nom_fabricant FROM fabricante fab JOIN producto prod ON fab.codigo = prod.codigo_fabricante;
 SELECT * FROM fabricante fab LEFT JOIN producto prod ON prod.codigo_fabricante = fab.codigo;
-SELECT * FROM fabricante fab LEFT OUTER JOIN producto prod ON prod.codigo_fabricante = fab.codigo;
+SELECT * FROM fabricante fab LEFT JOIN producto prod ON prod.codigo_fabricante = fab.codigo WHERE prod.codigo_fabricante IS NULL;
+SELECT * FROM producto WHERE codigo_fabricante = (SELECT codigo FROM fabricante WHERE nombre = "Lenovo");
+SELECT * FROM producto WHERE precio = (SELECT prod.precio from (SELECT * FROM producto WHERE codigo_fabricante=(SELECT codigo FROM fabricante WHERE nombre = "Lenovo") ORDER BY precio DESC LIMIT 1) prod);
+SELECT * FROM producto WHERE codigo_fabricante=(SELECT codigo FROM fabricante WHERE nombre = "Lenovo") ORDER BY precio DESC LIMIT 1;
+SELECT * FROM producto WHERE codigo_fabricante=(SELECT codigo FROM fabricante WHERE nombre = "Hewlett-Packard") ORDER BY precio ASC LIMIT 1;
+SELECT * FROM producto WHERE precio >= (SELECT prod.precio FROM producto prod WHERE codigo_fabricante=(SELECT codigo FROM fabricante WHERE nombre = "Lenovo") ORDER BY precio DESC LIMIT 1 ) ORDER BY precio DESC;
+SELECT * FROM producto prod JOIN (SELECT * FROM fabricante WHERE nombre = "Asus") fab ON prod.codigo_fabricante = fab.codigo WHERE prod.precio > (SELECT AVG(prod.precio) FROM producto);
