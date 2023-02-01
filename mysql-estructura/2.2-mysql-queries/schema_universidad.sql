@@ -22,12 +22,6 @@ CREATE TABLE persona (
     tipo ENUM('profesor', 'alumno') NOT NULL
 );
 
--- DROP TABLE profesor;
-
--- CREATE TABLE profesor (
---     id_profesor INT REFERENCES persona,
---     id_departamento INT REFERENCES departamento
--- );
 CREATE TABLE profesor (
     id_profesor INT UNSIGNED PRIMARY KEY,
     id_departamento INT UNSIGNED,
