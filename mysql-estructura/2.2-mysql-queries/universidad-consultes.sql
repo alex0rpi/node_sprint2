@@ -13,3 +13,5 @@ SELECT dep.nombre FROM profesor pro RIGHT JOIN departamento dep ON dep.id = pro.
 SELECT pro.id_profesor, pers.nombre AS nom_profe_sense_assignatura FROM asignatura asig RIGHT JOIN profesor pro ON asig.id_profesor = pro.id_profesor JOIN persona pers ON pers.id = pro.id_profesor WHERE asig.nombre IS NULL;
 SELECT asig.id AS id_assignatura, asig.nombre AS nom_assignatura, asig.id_profesor AS id_professor FROM asignatura asig LEFT JOIN profesor pro ON asig.id_profesor = pro.id_profesor WHERE asig.id_profesor IS NULL ORDER BY asig.nombre ASC;
 SELECT dep.nombre AS departament_que_no_ha_impartit FROM curso_escolar curs JOIN alumno_se_matricula_asignatura al ON curs.id = al.id_curso_escolar JOIN asignatura asig ON al.id_asignatura = asig.id JOIN profesor pro ON asig.id_profesor = pro.id_profesor RIGHT JOIN departamento dep ON pro.id_departamento = dep.id WHERE curs.anyo_inicio IS NULL;
+
+-- Hola
