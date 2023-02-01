@@ -1,3 +1,4 @@
+-- Active: 1675239530001@@127.0.0.1@3306@universidad
 DROP DATABASE IF EXISTS universidad;
 CREATE DATABASE universidad CHARACTER SET utf8mb4;
 USE universidad;
@@ -20,9 +21,16 @@ CREATE TABLE persona (
     sexo ENUM('H', 'M') NOT NULL,
     tipo ENUM('profesor', 'alumno') NOT NULL
 );
+
+-- DROP TABLE profesor;
+
+-- CREATE TABLE profesor (
+--     id_profesor INT REFERENCES persona,
+--     id_departamento INT REFERENCES departamento
+-- );
 CREATE TABLE profesor (
     id_profesor INT UNSIGNED PRIMARY KEY,
-    id_departamento INT UNSIGNED NOT NULL,
+    id_departamento INT UNSIGNED,
     FOREIGN KEY (id_profesor) REFERENCES persona(id),
     FOREIGN KEY (id_departamento) REFERENCES departamento(id)
 );
@@ -99,7 +107,7 @@ INSERT INTO persona VALUES (23, '64753215G', 'Irene', 'Hernández', 'Martínez',
 INSERT INTO persona VALUES (24, '85135690V', 'Sonia', 'Gea', 'Ruiz', 'Almería', 'C/ Mercurio', '678812017', '1995/04/13', 'M', 'alumno');
  
 /* Profesor */
-INSERT INTO profesor VALUES (3, 1);
+INSERT INTO profesor VALUES (3, NULL);
 INSERT INTO profesor VALUES (5, 2);
 INSERT INTO profesor VALUES (8, 3);
 INSERT INTO profesor VALUES (10, 4);

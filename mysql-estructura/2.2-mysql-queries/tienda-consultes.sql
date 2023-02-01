@@ -1,4 +1,4 @@
--- Active: 1675178991360@@127.0.0.1@3306@tienda
+-- Active: 1675153068653@@127.0.0.1@3306@tienda
 SELECT nombre FROM producto;
 SELECT nombre, precio FROM producto;
 SELECT nombre, precio, ROUND(precio*1.05, 2) AS precio_en_$ FROM producto;
