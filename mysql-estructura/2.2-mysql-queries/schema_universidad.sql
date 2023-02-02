@@ -101,7 +101,7 @@ INSERT INTO persona VALUES (23, '64753215G', 'Irene', 'Hernández', 'Martínez',
 INSERT INTO persona VALUES (24, '85135690V', 'Sonia', 'Gea', 'Ruiz', 'Almería', 'C/ Mercurio', '678812017', '1995/04/13', 'M', 'alumno');
  
 /* Profesor */
-INSERT INTO profesor VALUES (3, NULL);
+INSERT INTO profesor VALUES (3, 1);
 INSERT INTO profesor VALUES (5, 2);
 INSERT INTO profesor VALUES (8, 3);
 INSERT INTO profesor VALUES (10, 4);

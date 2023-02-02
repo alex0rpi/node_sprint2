@@ -58,14 +58,14 @@ CREATE TABLE vendes(
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES per poblar les taules
 -- *--------------------------------------------------------------------------------------------
-INSERT INTO vendes (empleat_venedor, data_venda, marca_venuda, nom_client)
+INSERT INTO vendes (empleat_venedor, data_venda, id_ullera_venuda, id_client)
 VALUES
-    ("Mario", '2022-11-10', "TomFord", "Mercuri"),
-    ("Mario", '2023-10-09', "Vogue", "Venus"),
-    ("Mario", '2023-12-08', "PRADA", "Mart"),
-    ("Mario", '2022-11-10', "PRADA", "Mart"),
-    ("Luigi", '2023-07-10', "Emporio", "Venus"),
-    ("Luigi", '2022-09-10', "Emporio", "Mercuri");
+    ("Mario", '2022-11-10', 12, 1),
+    ("Mario", '2023-10-09', 17, 2),
+    ("Mario", '2023-12-08', 15, 3),
+    ("Mario", '2022-11-10', 16, 3),
+    ("Luigi", '2023-07-10', 19, 2),
+    ("Luigi", '2022-09-10', 20, 1);
 -- -- *--------------------------------------------------------------------------------------------
 INSERT INTO proveïdors (nom_proveïdor, adreça, telefon, fax, nif)
 VALUES 
@@ -99,23 +99,19 @@ VALUES
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
 -- *Llista el total de compres d’un client/a.
-/* SELECT * FROM vendes WHERE nom_client="venus" ORDER BY empleat_venedor ASC; */
+SELECT * FROM vendes WHERE id_client=1 ORDER BY empleat_venedor ASC;
+-- O BÉ ↓↓
+SELECT * FROM vendes ven JOIN clients cli ON ven.id_client=cli.client_id WHERE cli.nom="Mercuri";
 
 -- *Llista les diferents ulleres que ha venut un empleat durant un any.
-/* SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND data_venda <= '2022-12-31'; */
+SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND YEAR(data_venda) = 2022;
+SELECT * FROM vendes WHERE empleat_venedor = "Luigi" AND YEAR(data_venda) = 2023;
 
 -- *Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
--- Entenc que he de fer INNER JOIN entre la taula proveidors i vendes
 
-/* SELECT DISTINCT nom_proveïdor, marca_venuda FROM vendes v JOIN ulleres u ON u.marca = v.marca_venuda; */
+SELECT DISTINCT pro.nom_proveïdor FROM proveïdors pro JOIN ulleres ull ON pro.proveidor_id=ull.id_proveïdor JOIN vendes ven ON ull.ulleres_id = ven.id_ullera_venuda;
+
 -- DISTINCT elimina duplicats
 -- Realitzem unió entre la taula vendes i ulleres sota el criteri estipulat a la keyword ON
 -- Es llisten tots els proveïdors les ulleres dels quals figuren en vendes. 
 -- No hi figura el proeïdor "Echo" car d'ell no s'ha venut cap ullera (marca Reebok)
-
--- *Les comandes següents són d'ús didàctic propi (SELF JOINS)
--- Comprovar quins clients han estat recomanats i per qui ⬇⬇
--- SELECT cl.nom, cl.client_recomanador FROM clients cl JOIN clients cli ON cl.client_recomanador = cli.nom;
-
--- Comprovar quins clients han estat recomanadors i quin client han aportat ⬇⬇
--- SELECT cl.nom, cli.nom AS client_aportat FROM clients cl JOIN clients cli ON cl.nom = cli.client_recomanador;

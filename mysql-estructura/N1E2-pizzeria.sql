@@ -1,5 +1,5 @@
+-- Active: 1675335306434@@127.0.0.1@3306@pizzeria
 DROP DATABASE pizzeria;
-USE pizzeria;
 CREATE SCHEMA IF NOT EXISTS pizzeria;
 USE pizzeria;
 -- *--------------------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ DROP TABLE begudes;
 -- *QUERIES per crear les taules
 -- *--------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS clients (
-    client_id SERIAL PRIMARY KEY,
+    client_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nom_client VARCHAR(100) NOT NULL,
     cognoms_client VARCHAR(100) NOT NULL,
     adreça VARCHAR(100) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS clients (
     telefon VARCHAR(100) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS botigues (
-    botiga_id SERIAL PRIMARY KEY,
+    botiga_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     adreça VARCHAR(100) NOT NULL,
     codi_postal VARCHAR(50) NOT NULL,
     localitat VARCHAR(50) NOT NULL,
@@ -35,70 +35,74 @@ CREATE TABLE IF NOT EXISTS botigues (
 );
 
 CREATE TABLE IF NOT EXISTS empleats (
-    empleat_id SERIAL PRIMARY KEY,
+    empleat_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nom VARCHAR(100) NOT NULL,
     cognoms VARCHAR(100) NOT NULL,
-    botiga INT REFERENCES botigues,
+    botiga_id INT,
+    FOREIGN KEY (botiga_id) REFERENCES botigues(botiga_id),
     nif VARCHAR(50) NOT NULL,
     telefon VARCHAR(100) NOT NULL UNIQUE,
     rol ENUM('cuiner', 'repartidor')
 );
-CREATE TABLE IF NOT EXISTS comandes (
-    comanda_id SERIAL PRIMARY KEY,
-    nom_client VARCHAR(100) REFERENCES clients(nom_client) ON DELETE CASCADE,
-    data_hora DATETIME NOT NULL,
-    modalitat ENUM('repartiment','domicili','recollida'),
-    -- Una comanda pot constar d'un o diversos productes.
-    num_pizzes INT,
-    num_hamburg INT,
-    num_begudes INT,
-    preu_total NUMERIC(5, 2) NOT NULL,
-    botiga VARCHAR(20) REFERENCES botigues ON DELETE CASCADE,
-    repartidor VARCHAR(100) REFERENCES empleats(nom) ON DELETE CASCADE,
-    hora_repartiment TIME NOT NULL
-);
 CREATE TABLE IF NOT EXISTS categories (
-    categoria_id SERIAL PRIMARY KEY,
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nom_categoria VARCHAR(20) NOT NULL
 );
-CREATE TABLE pizzes (
-    pizzes_id SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL,
-    descricio VARCHAR(200) NOT NULL,
-    categoria VARCHAR(20) REFERENCES categories(nom) ON DELETE CASCADE,
-    imatge VARCHAR(200), /*'c/users/formacio/documents/imaatges/etc.'*/
-    preu NUMERIC(5,2) NOT NULL
-);
-CREATE TABLE IF NOT EXISTS hamburgueses (
-    hamburgueses_id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS productes (
+    producte_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    tipus_producte ENUM ('pizza', 'hamburguesa', 'beguda'),
+    id_categoria_pizza INT,
+    FOREIGN KEY (id_categoria_pizza) REFERENCES categories(categoria_id),
     nom VARCHAR(50) NOT NULL,
     descripcio VARCHAR(200) NOT NULL,
     imatge VARCHAR(200),
     preu NUMERIC(5, 2) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS comandes (
+    comanda_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    client_id INT,
+    FOREIGN KEY (client_id) REFERENCES clients(client_id),
+    data_hora DATETIME NOT NULL,
+    modalitat ENUM('repartiment','domicili','recollida'),
+    id_pizza INT,
+    FOREIGN KEY (id_pizza) REFERENCES productes(producte_id),
+    id_hamburguesa INT,
+    FOREIGN KEY (id_hamburguesa) REFERENCES productes(producte_id),
+    id_beguda INT,
+    FOREIGN KEY (id_beguda) REFERENCES productes(producte_id),
+    preu_total NUMERIC(5, 2) NOT NULL,
+    botiga_id INT,
+    repartidor_id INT,
+    FOREIGN KEY (repartidor_id) REFERENCES empleats(empleat_id),
+    hora_repartiment TIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS begudes (
-    begudes_id SERIAL PRIMARY KEY,
-    nom VARCHAR(50) NOT NULL,
-    descripcio VARCHAR(200) NOT NULL,
-    imatge VARCHAR(200),
-    preu NUMERIC(5, 2) NOT NULL
+CREATE TABLE IF NOT EXISTS client_demana_producte (
+    producte_id INT UNSIGNED NOT NULL,
+    client_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (producte_id, client_id),
+    FOREIGN KEY (producte_id) REFERENCES productes(producte_id),
+    FOREIGN KEY (client_id) REFERENCES clients(client_id),
+    quantitat INT UNSIGNED NOT NULL
 );
+
+-- falta una tabla many to many (tabla intermedia)
+
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES per poblar les taules
 -- *--------------------------------------------------------------------------------------------
-INSERT INTO comandes (nom_client, data_hora, modalitat, num_pizzes, num_hamburg, num_begudes, preu_total, botiga, repartidor, hora_repartiment)
+INSERT INTO comandes (client_id, data_hora, modalitat, num_pizzes, num_hamburg, num_begudes, preu_total, botiga_id, repartidor_id, hora_repartiment)
 VALUES
-    ("Mario", "2023-01-01 22:10:10", "repartiment", 2, 0, 1, 20.00, 1, "James", "11:00:00"),
-    ("Mario", "2023-01-02 21:10:10", "recollida", 0, 1, 2, 20.00, 1, null, "11:00:00"),
-    ("Mario", "2023-01-03 20:10:10", "recollida", 1, 1, 2, 20.00, 1, null, "11:00:00"),
-    ("Luigi", "2023-01-04 19:10:10", "domicili", 2, 0, 3, 20.00, 2, null, "11:00:00"),
-    ("Toad", "2023-01-04 20:10:10", "repartiment", 2, 1, 3, 20.00, 2, "Peppy", "11:00:00"),
-    ("Toad", "2023-01-02 20:10:10", "repartiment", 2, 2, 1, 20.00, 2, "Peppy", "11:00:00"),
-    ("Bowser", "2023-01-04 18:10:10", "recollida", 4, 0, 6, 20.00, 3, null, "11:00:00"),
-    ("Bowser", "2023-01-05 21:10:10", "domicili", 3, 0, 2, 20.00, 3, null, "11:00:00"),
-    ("Goomba", "2023-01-02 20:30:10", "recollida", 0, 1, 1, 20.00, 3, null, "11:00:00"),
-    ("Turtle", "2023-01-03 21:30:10", "repartiment", 0, 3, 3, 20.00, 3, "Rob", "11:00:00");
+    (1, "2023-01-01 22:10:10", "repartiment", 2, 0, 1, 20.00, 1, 2, "11:00:00"),
+    (1, "2023-01-02 21:10:10", "recollida", 0, 1, 2, 20.00, 1, null, "11:00:00"),
+    (1, "2023-01-03 20:10:10", "recollida", 1, 1, 2, 20.00, 1, null, "11:00:00"),
+    (2, "2023-01-04 19:10:10", "domicili", 2, 0, 3, 20.00, 2, null, "11:00:00"),
+    (3, "2023-01-04 20:10:10", "repartiment", 2, 1, 3, 20.00, 2, 4, "11:00:00"),
+    (3, "2023-01-02 20:10:10", "repartiment", 2, 2, 1, 20.00, 2, 4, "11:00:00"),
+    (4, "2023-01-04 18:10:10", "recollida", 4, 0, 6, 20.00, 3, null, "11:00:00"),
+    (4, "2023-01-05 21:10:10", "domicili", 3, 0, 2, 20.00, 3, null, "11:00:00"),
+    (5, "2023-01-02 20:30:10", "recollida", 0, 1, 1, 20.00, 3, null, "11:00:00"),
+    (6, "2023-01-03 21:30:10", "repartiment", 0, 3, 3, 20.00, 3, 6, "11:00:00");
 INSERT INTO clients (nom_client, cognoms_client, adreça, codi_postal, localitat, provincia, telefon)
 VALUES
     ("Mario", "Kart", "Acorn Plains 2", "08019", "Hospitalet", "BCN", "999999999"),
@@ -114,7 +118,7 @@ VALUES
     ("Molist 16", "08008", "Abrera", "BCN"),
     ("Cuba 20", "08015", "Vilassar", "BCN");
 
-INSERT INTO empleats (nom, cognoms, botiga, nif, telefon, rol)
+INSERT INTO empleats (nom, cognoms, botiga_id, nif, telefon, rol)
 VALUES
     ("Fox", "McCloud", 1, "47872216Q", "666666666", "cuiner"),
     ("James", "McCloud", 1, "47872216J", "666666661", "repartidor"),
@@ -135,36 +139,21 @@ VALUES
     ("tofu_burguer", "for anyone who likes this kind of thing", null, 10.90),
     ("chicken burguer", "the healthiest one, you get thinner garanteed", null, 10.90),
     ("250g good burger", "from happy cows", null, 10.90);
-INSERT INTO pizzes (nom, descricio, categoria, imatge, preu)
+INSERT INTO pizzes (nom, descripcio, id_categoria, imatge, preu)
 VALUES
-    ("manchego", "all the cheese in the world", "KIDS", null, 8.90),
-    ("boloñesa", "dont have macarroni but at least youll be happy", "KIDS", null, 6.90),
-    ("tomatini", "tasty delicious local vegetables", "VEGGIE", null, 14.90),
-    ("tofu", "not so tasty but some people order this", "VEGGIE", null, 12.90),
-    ("gorlomi", "this is the one", "CARNIVORS", null, 13.90),
-    ("decoco", "for hipsters who have extra cash", "CARNIVORS", null, 16.90);
+    ("manchego", "all the cheese in the world", 1, "C/users/pepito/documents/img/pizzes/manchego.png", 8.90),
+    ("boloñesa", "dont have macarroni but at least youll be happy", 1, "C/users/pepito/documents/img/pizzes/boloñesa.png", 6.90),
+    ("tomatini", "tasty delicious local vegetables", 2, "C/users/pepito/documents/img/pizzes/tomatini.png", 14.90),
+    ("tofu", "not so tasty but some people order this", 2, "C/users/pepito/documents/img/pizzes/tofu.png", 12.90),
+    ("gorlomi", "this is the one", 3, "C/users/pepito/documents/img/pizzes/gorlomi.png", 13.90),
+    ("decoco", "for hipsters who have extra cash", 3, "C/users/pepito/documents/img/pizzes/decoco.png", 16.90);
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
 -- *Llista quants productes de tipus "Begudes" s'han venut en una determinada localitat.
-SELECT SUM(num_begudes) AS total_begudes
-FROM comandes co
-JOIN 
-    (SELECT * FROM clients cli WHERE localitat = "Hospitalet") cli
-    ON cli.nom_client = co.nom_client;
-
--- Número de localitats diferents on hi ha clients
--- SELECT COUNT(DISTINCT localitat) from clients;
-
--- Número clients en una determinada localitat
--- SELECT COUNT(nom_client) FROM clients WHERE localitat = "Hospitalet";
-
+SELECT * FROM comandes WHERE num_begudes > 0;
 -- *Llista quantes comandes ha efectuat un determinat empleat.
 /* Entenc que ha de tractar-se d'un empleat repartidor, ja que només emmagatzemo el nom del 
 repartidor quan es tracta d'una comanda de lliurament a domicili. */
 SELECT COUNT(comanda_id) FROM comandes WHERE repartidor = "Peppy";
-
--- Script per saber QUINES COMANDES
--- SELECT comanda_id FROM comandes WHERE repartidor = "Peppy";
--- Script per saber QUANTES ha efectuat (la suma)
 
