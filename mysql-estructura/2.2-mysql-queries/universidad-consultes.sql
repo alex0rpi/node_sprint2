@@ -13,16 +13,13 @@ SELECT dep.nombre FROM profesor pro RIGHT JOIN departamento dep ON dep.id = pro.
 SELECT pro.id_profesor, pers.nombre AS nom_profe_sense_assignatura FROM asignatura asig RIGHT JOIN profesor pro ON asig.id_profesor = pro.id_profesor JOIN persona pers ON pers.id = pro.id_profesor WHERE asig.nombre IS NULL;
 SELECT asig.id AS id_assignatura, asig.nombre AS nom_assignatura, asig.id_profesor AS id_professor FROM asignatura asig LEFT JOIN profesor pro ON asig.id_profesor = pro.id_profesor WHERE asig.id_profesor IS NULL ORDER BY asig.nombre ASC;
 SELECT dep.nombre AS departament_que_no_ha_impartit FROM curso_escolar curs JOIN alumno_se_matricula_asignatura al ON curs.id = al.id_curso_escolar JOIN asignatura asig ON al.id_asignatura = asig.id JOIN profesor pro ON asig.id_profesor = pro.id_profesor RIGHT JOIN departamento dep ON pro.id_departamento = dep.id WHERE curs.anyo_inicio IS NULL;
-
--- Retorna el nombre total d'alumnes que hi ha.
-SELECT COUNT(id) FROM persona WHERE tipo ="estudiante";
--- Calcula quants alumnes van néixer en 1999.
-SELECT COUNT(id) FROM persona WHERE tipo ="estudiante" AND YEAR(fecha_nacimiento) = 1999;
+SELECT COUNT(id) FROM persona WHERE tipo ="alumno";
+SELECT COUNT(id) FROM persona WHERE tipo ="alumno" AND YEAR(fecha_nacimiento) = 1999;
 -- Calcula quants professors/es hi ha en cada departament. El resultat només ha de mostrar dues columnes, una amb el nom del departament i una altra amb el nombre de professors/es que hi ha en aquest departament. El resultat només ha d'incloure els departaments que tenen professors/es associats i haurà d'estar ordenat de major a menor pel nombre de professors/es.
-SELECT dep.nombre, COUNT(prof.id_profesor)
+SELECT COUNT(prof.id_profesor)
 FROM profesor prof
-JOIN departamento dep
-ON prof.id_departamento = dep.id ORDER BY COUNT(prof.id_profesor) DESC;
+RIGHT JOIN departamento dep
+ON prof.id_departamento = dep.id;
 
 -- Retorna un llistat amb tots els departaments i el nombre de professors/es que hi ha en cadascun d'ells. Tingui en compte que poden existir departaments que no tenen professors/es associats. Aquests departaments també han d'aparèixer en el llistat.
 SELECT dep.nombre, COUNT(prof.id_profesor)
@@ -37,7 +34,7 @@ FROM grado grado
 JOIN alumno_se_matricula_asignatura al
 ON al.id_alumno = est.id
 JOIN asignatura asig
-ON al.id_asignatura = asig.id_grado
+ON al.id_asignatura = asig.id_grado;
 
 -- Retorna un llistat amb el nom de tots els graus existents en la base de dades i el nombre d'assignatures que té cadascun, dels graus que tinguin més de 40 assignatures associades.
 
@@ -56,7 +53,9 @@ ON al.id_asignatura = asig.id_grado
 
 
 -- Retorna totes les dades de l'alumne/a més jove.
-SELECT * FROM persona ORDER BY fecha_nacimiento DESC LIMIT=1;
+SELECT * FROM persona ORDER BY fecha_nacimiento DESC LIMIT 1;
 
 -- Retorna un llistat amb els professors/es que tenen un departament associat i que no imparteixen cap assignatura.
+
+SELECT * FROM persona pers JOIN profesor pro ON pers.id = pro.id_profesor JOIN departamento dep ON dep.id = pro.id_departamento LEFT JOIN asignatura asig ON asig.id_profesor = pro.id_profesor WHERE asig.id_profesor IS NULL;
 
