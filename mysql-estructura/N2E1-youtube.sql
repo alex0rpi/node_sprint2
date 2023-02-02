@@ -1,3 +1,4 @@
+-- Active: 1675358553965@@127.0.0.1@3306@youtube
 DROP DATABASE youtube;
 CREATE SCHEMA IF NOT EXISTS youtube;
 USE youtube;
@@ -6,11 +7,12 @@ USE youtube;
 -- *-------------------------------------------------------------
 DROP TABLE usuaris;
 DROP TABLE videos;
+DROP TABLE canals;
 -- *-------------------------------------------------------------
 -- *QUERIES per crear les taules
 -- *-------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS usuaris (
-    ususari_id SERIAL PRIMARY KEY,
+    usuari_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     email VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
     nom_usuari VARCHAR(100) NOT NULL,
@@ -20,23 +22,22 @@ CREATE TABLE IF NOT EXISTS usuaris (
     codi_postal VARCHAR(100) NOT NULL
 );
 CREATE TABLE etiquetes (
-    tag_id SERIAL PRIMARY KEY,
+    tag_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nom_tag VARCHAR(50) NOT NULL
 );
 CREATE TABLE canals (
-    canal_id SERIAL PRIMARY KEY,
-    usuari_canal VARCHAR(100) REFERENCES usuaris(nom_usuari) ON DELETE CASCADE,
+    canal_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id_usuari INT,
+    FOREIGN KEY(id_usuari) REFERENCES usuaris(usuari_id),
     nom_canal VARCHAR(100) NOT NULL,
     descripcio VARCHAR(500) NOT NULL,
     data_creacio DATE NOT NULL
 );
 CREATE TABLE videos (
-    video_id SERIAL PRIMARY KEY,
+    video_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     titol VARCHAR(100) NOT NULL,
     descripcio VARCHAR(500) NOT NULL,
     usuari_video VARCHAR(100) REFERENCES usuaris(nom_usuari),
-    tags JSON DEFAULT ('[""]'),
-    -- Afegir FOREIGN KEY als tags? ES UN SET O UNA STRING?
     data_hora DATETIME NOT NULL,
     grandaria INT NOT NULL,
     nom_arxiu VARCHAR(100) NOT NULL,
@@ -48,15 +49,17 @@ CREATE TABLE videos (
     estat ENUM('public', 'ocult', 'privat') NOT NULL
 );
 CREATE TABLE playlists (
-    playlist_id SERIAL PRIMARY KEY,
+    playlist_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nom_playlist VARCHAR(100) NOT NULL,
-    user_playlist INT REFERENCES usuaris(ususari_id) ON DELETE CASCADE,
+    id_usuari INT,
+    FOREIGN KEY (id_usuari) REFERENCES usuaris(usuari_id),
     data_creacio DATE NOT NULL,
     estat ENUM('PUBLICA', 'PRIVADA')
 );
 CREATE TABLE comentaris (
-    coment_id SERIAL PRIMARY KEY,
-    usuari VARCHAR(100) REFERENCES usuaris(nom_usuari) ON DELETE CASCADE,
+    coment_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    usuari_id INT,
+    FOREIGN KEY(usuari_id) REFERENCES usuaris(usuari_id),
     video_id INT REFERENCES videos(video_id),
     `text` VARCHAR(500) NOT NULL,
     data_hora_coment DATETIME NOT NULL
@@ -65,35 +68,34 @@ CREATE TABLE comentaris (
 -- *----------------------------------------
 -- *Taules intermitges ⬇ ⬇ ⬇ ⬇ ⬇
 -- *----------------------------------------
-
-CREATE TABLE likes (
+CREATE TABLE usuari_fa_like (
     video_id INT REFERENCES videos ON DELETE CASCADE,
     user_id INT REFERENCES usuaris ON DELETE CASCADE,
     data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(video_id, user_id)
 );
-CREATE TABLE dislikes (
+CREATE TABLE usuari_fa_dislike (
     video_id INT REFERENCES videos ON DELETE CASCADE,
     user_id INT REFERENCES usuaris ON DELETE CASCADE,
     data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(video_id, user_id)
 );
-CREATE TABLE magrada (
+CREATE TABLE usuari_magrada_coment (
     coment_id INT REFERENCES comentaris ON DELETE CASCADE,
     user_id INT REFERENCES usuaris ON DELETE CASCADE,
     data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(coment_id, user_id)
 );
-CREATE TABLE no_magrada (
+CREATE TABLE usuari_no_magrada_coment (
     coment_id INT REFERENCES comentaris ON DELETE CASCADE,
     user_id INT REFERENCES usuaris ON DELETE CASCADE,
     data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(coment_id, user_id)
 );
-CREATE TABLES suscripcions (
-    canal_id INT REFERENCES canals,
-    usuari_id INT REFERENCES usuaris,
-    PRIMARY KEY(canal_id, usuari_id)
+CREATE TABLES usuari_suscriu_canal (
+    id_canal INT REFERENCES canals,
+    id_usuari INT REFERENCES usuaris,
+    PRIMARY KEY(id_canal, id_usuari)
 );
 
 /* 
@@ -125,7 +127,3 @@ CREATE TABLES suscripcions (
         ON v.video_id = l.video_id;
     
 -- *Seleccionar tots els CANALS a on un usuari està suscrit
-SELECT *
-FROM (SELECT * FROM suscripcions WHERE ) sus
-JOIN usuaris usu
-    ON 

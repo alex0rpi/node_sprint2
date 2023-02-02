@@ -11,5 +11,5 @@ T’han contractat per a dissenyar una web que permeti fer comandes de menjar a 
 
 *Una comanda és gestionada per una única botiga i una botiga pot gestionar moltes comandes. De cada botiga s'emmagatzema un identificador únic: Adreça, codi postal, localitat, província.
 
-*En una botiga poden treballar molts empleats i un empleat només pot treballar en una botiga. De cada empleat, s'emmagatzema un identificador únic: Nom, cognoms, NIF, Telèfon.
-Si treballa com a cuiner o repartidor. Per a les comandes de repartiment a domicili interessa guardar qui és el repartidor que fa el lliurament de la comanda i la data/hora del moment del lliurament.
+*En una botiga poden treballar molts empleats i un empleat només pot treballar en una botiga. De cada empleat, s'emmagatzema un identificador únic: Nom, cognoms, NIF, Telèfon. Si treballa com a cuiner o repartidor. 
+Per a les comandes de repartiment a domicili interessa guardar qui és el repartidor que fa el lliurament de la comanda i la data/hora del moment del lliurament.
