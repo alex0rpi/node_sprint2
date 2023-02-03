@@ -13,26 +13,6 @@ CREATE TABLE IF NOT EXISTS usuaris (
     pais VARCHAR(50) NOT NULL,
     codi_postal VARCHAR(100) NOT NULL
 );
-CREATE TABLE targetes_credit (
-    card_id INT UNSIGNED AUTO_INCREMENT,
-    usuari_id INT UNSIGNED,
-    PRIMARY KEY (card_id, usuari_id),
-    FOREIGN KEY (usuari_id) REFERENCES usuaris(usuari_id) ON DELETE CASCADE,
-    numero_tarjeta INT NOT NULL,
-    mes_caducitat TINYINT UNSIGNED NOT NULL, 
-    CHECK (mes_caducitat >=1 AND mes_caducitat <= 12),
-    any_caducitat TINYINT UNSIGNED NOT NULL, 
-    codi_seguretat INT(3) UNSIGNED NOT NULL
-);
-
-CREATE TABLE paypals (
-    paypal_id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-    user_id INT UNSIGNED,
-    paypal_username VARCHAR(100),
-    PRIMARY KEY (paypal_id, user_id),
-    FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id) ON DELETE CASCADE
-);
-
 CREATE TABLE usuari_fa_subscripcio (
     suscripcio_id INT UNSIGNED AUTO_INCREMENT,
     user_id INT UNSIGNED,
@@ -43,15 +23,31 @@ CREATE TABLE usuari_fa_subscripcio (
     forma_pagament ENUM('targeta de credit', 'paypal'),
     targeta_credit INT REFERENCES targetes_credit(numero_tarjeta)
 );
-
+CREATE TABLE targetes_credit (
+    card_id INT UNSIGNED AUTO_INCREMENT,
+    usuari_id INT UNSIGNED,
+    PRIMARY KEY (card_id, usuari_id),
+    FOREIGN KEY (usuari_id) REFERENCES usuari_fa_subscripcio(user_id) ON DELETE CASCADE,
+    numero_tarjeta INT NOT NULL,
+    mes_caducitat TINYINT UNSIGNED NOT NULL, 
+    CHECK (mes_caducitat >=1 AND mes_caducitat <= 12),
+    any_caducitat TINYINT UNSIGNED NOT NULL, 
+    codi_seguretat INT(3) UNSIGNED NOT NULL
+);
+CREATE TABLE paypals (
+    paypal_id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+    user_id INT UNSIGNED,
+    paypal_username VARCHAR(100),
+    PRIMARY KEY (paypal_id, user_id),
+    FOREIGN KEY (user_id) REFERENCES usuari_fa_subscripcio(user_id) ON DELETE CASCADE
+);
 CREATE TABLE pagaments(
     payment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
     user_id INT UNSIGNED,
-    FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id),
+    FOREIGN KEY (user_id) REFERENCES usuari_fa_subscripcio(user_id),
     pay_date DATE NOT NULL,
     total NUMERIC(5,2) NOT NULL
 );
-
 CREATE TABLE playlists(
     playlist_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     creador INT REFERENCES usuaris,
@@ -60,7 +56,6 @@ CREATE TABLE playlists(
     data_creacio DATE,
     tipus_playlist ENUM('activa', 'esborrada')
 );
-
 CREATE TABLE usuari_esborra_playlist(
     playlist_id INT UNSIGNED,
     user_id INT UNSIGNED,
@@ -69,7 +64,6 @@ CREATE TABLE usuari_esborra_playlist(
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id),
     FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id)
 );
-
 CREATE TABLE usuari_modifica_playlist(
     playlist_id INT UNSIGNED,
     user_id INT UNSIGNED,
@@ -78,7 +72,6 @@ CREATE TABLE usuari_modifica_playlist(
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id),
     FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id)
 );
-
 CREATE TABLE artistes(
     artist_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -100,7 +93,6 @@ CREATE TABLE canciones(
     durada TIME NOT NULL,
     reproduccions INT
 );
-
 CREATE TABLE usuari_segueix_artista (
     user_id INT UNSIGNED,
     artist_id INT UNSIGNED,
@@ -108,7 +100,6 @@ CREATE TABLE usuari_segueix_artista (
     FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id),
     FOREIGN KEY (artist_id) REFERENCES artistes(artist_id)
 );
-
 CREATE TABLE user_marca_album_favorit(
     user_id INT UNSIGNED,
     album_id INT UNSIGNED,
