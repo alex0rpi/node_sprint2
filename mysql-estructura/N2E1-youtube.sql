@@ -18,8 +18,8 @@ CREATE TABLE etiquetes (
 );
 CREATE TABLE canals (
     canal_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_usuari INT UNSIGNED,
-    FOREIGN KEY(id_usuari) REFERENCES usuaris(usuari_id),
+    id_owner INT UNSIGNED,
+    FOREIGN KEY(id_owner) REFERENCES usuaris(usuari_id),
     nom_canal VARCHAR(100) NOT NULL,
     descripcio VARCHAR(500) NOT NULL,
     data_creacio DATE NOT NULL
@@ -60,11 +60,11 @@ CREATE TABLE video_es_etiquetat (
     FOREIGN KEY (video_id) REFERENCES videos(video_id),
     FOREIGN KEY (tag_id) REFERENCES etiquetes(tag_id)
 );
-CREATE TABLE usuari_suscriu_canal (
-    id_usuari_suscrit INT UNSIGNED,
+CREATE TABLE usuari_subscriu_canal (
+    id_usuari_subscrit INT UNSIGNED,
     canal_id INT UNSIGNED,
-    PRIMARY KEY (id_usuari, canal_id),
-    FOREIGN KEY (id_usuari) REFERENCES usuaris(usuari_id),
+    PRIMARY KEY (id_usuari_subscrit, canal_id),
+    FOREIGN KEY (id_usuari_subscrit) REFERENCES usuaris(usuari_id),
     FOREIGN KEY (canal_id) REFERENCES canals(canal_id)
 );
 CREATE TABLE usuari_reacciona_video (
