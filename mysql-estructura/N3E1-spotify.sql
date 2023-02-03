@@ -1,14 +1,7 @@
+-- Active: 1675420343906@@127.0.0.1@3306@spotify
 DROP DATABASE spotify;
 CREATE SCHEMA IF NOT EXISTS spotify;
 USE spotify;
--- *--------------------------------------------------------------------------------------------
--- *QUERIES per ESBORRAR les taules en cas necessari
--- *--------------------------------------------------------------------------------------------
-DROP TABLE usuaris;
-DROP TABLE videos;
--- *--------------------------------------------------------------------------------------------
--- *QUERIES per crear les taules
--- *--------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS usuaris (
     usuari_id SERIAL PRIMARY KEY,
     tipus_user ENUM('free', 'premium'),
