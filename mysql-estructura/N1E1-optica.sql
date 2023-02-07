@@ -21,11 +21,17 @@ CREATE TABLE IF NOT EXISTS proveïdors (
     nif VARCHAR(100) NOT NULL UNIQUE
 );
 -- *--------------------------------------------------------------------------------------------
-CREATE TABLE ulleres (
-    ulleres_id INT AUTO_INCREMENT PRIMARY KEY not NULL,
+CREATE TABLE marques (
+    id_marca INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nom_marca VARCHAR(50) NOT NULL
     id_proveïdor INT UNSIGNED NOT NULL,
     FOREIGN KEY (id_proveïdor) REFERENCES proveïdors(proveidor_id) ON DELETE CASCADE,
-    marca VARCHAR(100) NOT NULL,
+);
+-- *--------------------------------------------------------------------------------------------
+CREATE TABLE ulleres (
+    ulleres_id INT AUTO_INCREMENT PRIMARY KEY not NULL,
+    marca_id VARCHAR(50),
+    FOREIGN KEY(marca_id) REFERENCES marques(id_marca),
     graduacio_esq DECIMAL(4,2) NOT NULL,
     graduacio_dret DECIMAL(4,2) NOT NULL,
     tipus_muntura ENUM('flotant', 'pasta', 'metàl·lica') NOT NULL,

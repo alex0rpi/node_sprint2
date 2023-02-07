@@ -47,11 +47,18 @@ CREATE TABLE videos (
     grandaria INT NOT NULL,
     nom_arxiu VARCHAR(100) NOT NULL,
     durada TIME,
-    thumbnail BLOB,
+    thumbnail VARCHAR(200),
     reproduccions INT NOT NULL,
     likes INT NOT NULL,
     dislikes INT NOT NULL,
     estat ENUM('public', 'ocult', 'privat') NOT NULL
+);
+CREATE TABLE playlist_conte_video (
+    id_video INT,
+    id_playlist INT,
+    PRIMARY KEY (id_playlist, id_video),
+    FOREIGN KEY(id_video) REFERENCES videos(video_id),
+    FOREIGN KEY(id_playlist) REFERENCES playlists(playlist_id)
 );
 CREATE TABLE video_es_etiquetat (
     video_id INT UNSIGNED,
@@ -86,6 +93,8 @@ CREATE TABLE usuari_comenta (
     FOREIGN KEY(video_id) REFERENCES videos(video_id),
     FOREIGN KEY(coment_id) REFERENCES comentaris(coment_id)
 );
+/* L'Oriol m'ha fet veure que puc prescindir d'una taula de comentaris si incloc el text del comentari
+a la taula usuari_comenta, i incloc el coment_id com a PRIMARY KEY, i fent del id_usuari i del video_id FOREIGN keys. */
 CREATE TABLE usuari_reacciona_comentari (
     coment_id INT UNSIGNED,
     id_usuari INT UNSIGNED,
