@@ -20,7 +20,7 @@ CREATE TABLE usuari_fa_subscripcio (
     FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id) ON DELETE CASCADE,
     data_inici DATE NOT NULL,
     data_renovacio DATE NOT NULL,
-    forma_pagament ENUM('targeta de credit', 'paypal'),
+    forma_pagament ENUM('targeta de credit', 'paypal')
 /* L'oriol m'ha fet notar que no cal guardar cap id ni número de tarjeta de crèdit en aquesta taula */
 );
 CREATE TABLE targetes_credit (
@@ -32,7 +32,7 @@ CREATE TABLE targetes_credit (
     mes_caducitat TINYINT UNSIGNED NOT NULL, 
     CHECK (mes_caducitat >=1 AND mes_caducitat <= 12),
     any_caducitat TINYINT UNSIGNED NOT NULL, 
-    codi_seguretat INT(3) UNSIGNED NOT NULL
+    codi_seguretat INT UNSIGNED NOT NULL
 );
 CREATE TABLE paypals (
     paypal_id INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -49,9 +49,8 @@ CREATE TABLE pagaments(
     total NUMERIC(5,2) NOT NULL
 );
 CREATE TABLE playlists(
-    playlist_id INT UNSIGNED AUTO_INCREMENT KEY,
+    playlist_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     owner_id INT UNSIGNED,
-    PRIMARY KEY(playlist_id, owner_id),
     FOREIGN KEY (owner_id) REFERENCES usuaris(usuari_id),
     titol VARCHAR(100) NOT NULL,
     num_cançons INT NOT NULL,
@@ -61,6 +60,7 @@ CREATE TABLE playlists(
 );
 
 CREATE TABLE usuari_esborra_playlist(
+    /* Realment cal aquesta taula??? */
     playlist_id INT UNSIGNED,
     user_id INT UNSIGNED,
     date_deleted DATE NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE albums(
     artist_id INT UNSIGNED,
     FOREIGN KEY (artist_id) REFERENCES artistes(artist_id),
     titol VARCHAR(100) NOT NULL,
-    any_pub INT(4) NOT NULL,
+    any_pub INT NOT NULL,
     imatge BLOB
 );
 CREATE TABLE canciones(
@@ -98,7 +98,7 @@ CREATE TABLE usuari_modifica_canciones_playlist(
     date_modif DATE NOT NULL,
     PRIMARY KEY (playlist_id, user_id, song_id),
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id),
-    FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id)
+    FOREIGN KEY (user_id) REFERENCES usuaris(usuari_id),
     FOREIGN KEY (song_id) REFERENCES canciones(song_id)
     /* Qualsevol usuari pot modificar la playlist */
 );

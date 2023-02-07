@@ -2,7 +2,7 @@
 DROP DATABASE youtube;
 CREATE SCHEMA IF NOT EXISTS youtube;
 USE youtube;
-CREATE TABLE IF NOT EXISTS usuaris (
+CREATE TABLE usuaris (
     usuari_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
@@ -32,11 +32,6 @@ CREATE TABLE playlists (
     data_creacio DATE NOT NULL,
     estat ENUM('PUBLICA', 'PRIVADA')
 );
-CREATE TABLE comentaris (
-    coment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `text` TEXT NOT NULL,
-    data_hora_coment DATETIME NOT NULL
-);
 CREATE TABLE videos (
     video_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     usuari_id INT UNSIGNED,
@@ -54,8 +49,8 @@ CREATE TABLE videos (
     estat ENUM('public', 'ocult', 'privat') NOT NULL
 );
 CREATE TABLE playlist_conte_video (
-    id_video INT,
-    id_playlist INT,
+    id_video INT UNSIGNED,
+    id_playlist INT UNSIGNED,
     PRIMARY KEY (id_playlist, id_video),
     FOREIGN KEY(id_video) REFERENCES videos(video_id),
     FOREIGN KEY(id_playlist) REFERENCES playlists(playlist_id)
@@ -83,15 +78,15 @@ CREATE TABLE usuari_reacciona_video (
     FOREIGN KEY (id_usuari) REFERENCES usuaris(usuari_id),
     FOREIGN KEY (video_id) REFERENCES videos(video_id)
 );
+
 CREATE TABLE usuari_comenta (
+    coment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_usuari INT UNSIGNED,
     video_id INT UNSIGNED,
-    coment_id INT UNSIGNED,
+    text_comentari TEXT,
     data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(id_usuari, video_id, coment_id),
     FOREIGN KEY(id_usuari) REFERENCES usuaris(usuari_id),
-    FOREIGN KEY(video_id) REFERENCES videos(video_id),
-    FOREIGN KEY(coment_id) REFERENCES comentaris(coment_id)
+    FOREIGN KEY(video_id) REFERENCES videos(video_id)
 );
 /* L'Oriol m'ha fet veure que puc prescindir d'una taula de comentaris si incloc el text del comentari
 a la taula usuari_comenta, i incloc el coment_id com a PRIMARY KEY, i fent del id_usuari i del video_id FOREIGN keys. */
@@ -101,7 +96,7 @@ CREATE TABLE usuari_reacciona_comentari (
     reaccio ENUM('magrada','no_magrada'),
     data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (coment_id, id_usuari),
-    FOREIGN KEY (coment_id) REFERENCES comentaris(coment_id),
+    FOREIGN KEY (coment_id) REFERENCES usuari_comenta(coment_id),
     FOREIGN KEY (id_usuari) REFERENCES usuaris(usuari_id)
 );
 
@@ -128,7 +123,7 @@ ON usu.usuari_id = reacvid.id_usuari WHERE usu.nom_usuari = "Pepito";
 -- *Seleccionar tots els CANALS a on un usuari està suscrit
 SELECT can.nom_canal
 FROM canals can
-JOIN usuari_suscriu_canal usus
+JOIN usuari_subscriu_canal usus
 ON can.canal_id = usus.canal_id
 JOIN usuaris us
-ON usus.id_usuari = us.usuari_id WHERE us.nom_usuari = "Pepito";
+ON usus.id_usuari_subscrit = us.usuari_id WHERE us.nom_usuari = "Pepito";

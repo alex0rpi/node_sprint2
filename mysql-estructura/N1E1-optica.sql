@@ -1,20 +1,20 @@
--- Active: 1675250040978@@127.0.0.1@3306@optica_cul_ampolla
+-- Active: 1675784715320@@127.0.0.1@3306@optica_cul_ampolla
 DROP DATABASE optica_cul_ampolla;
 CREATE SCHEMA IF NOT EXISTS optica_cul_ampolla;
 USE optica_cul_ampolla;
 -- -- *--------------------------------------------------------------------------------------------
 -- -- *QUERIES per ESBORRAR les taules en cas necessari
 -- -- *--------------------------------------------------------------------------------------------
--- DROP TABLE proveïdors;
+-- DROP TABLE proveidors;
 -- DROP TABLE ulleres;
 -- DROP TABLE clients;
 -- DROP TABLE vendes;
 -- -- *--------------------------------------------------------------------------------------------
 -- -- *QUERIES per crear les taules
 -- -- *--------------------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS proveïdors (
+CREATE TABLE proveidors (
     proveidor_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nom_proveïdor VARCHAR(100) NOT NULL,
+    nom_proveidor VARCHAR(100) NOT NULL,
     adreça VARCHAR(200) NOT NULL,
     telefon VARCHAR(100) NOT NULL UNIQUE,
     fax VARCHAR(100) UNIQUE,
@@ -23,14 +23,14 @@ CREATE TABLE IF NOT EXISTS proveïdors (
 -- *--------------------------------------------------------------------------------------------
 CREATE TABLE marques (
     id_marca INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nom_marca VARCHAR(50) NOT NULL
-    id_proveïdor INT UNSIGNED NOT NULL,
-    FOREIGN KEY (id_proveïdor) REFERENCES proveïdors(proveidor_id) ON DELETE CASCADE,
+    nom_marca VARCHAR(50) NOT NULL UNIQUE,
+    id_proveidor INT UNSIGNED NOT NULL,
+    FOREIGN KEY (id_proveidor) REFERENCES proveidors(proveidor_id) ON DELETE CASCADE
 );
 -- *--------------------------------------------------------------------------------------------
 CREATE TABLE ulleres (
     ulleres_id INT AUTO_INCREMENT PRIMARY KEY not NULL,
-    marca_id VARCHAR(50),
+    marca_id INT UNSIGNED,
     FOREIGN KEY(marca_id) REFERENCES marques(id_marca),
     graduacio_esq DECIMAL(4,2) NOT NULL,
     graduacio_dret DECIMAL(4,2) NOT NULL,
@@ -64,16 +64,7 @@ CREATE TABLE vendes(
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES per poblar les taules
 -- *--------------------------------------------------------------------------------------------
-INSERT INTO vendes (empleat_venedor, data_venda, id_ullera_venuda, id_client)
-VALUES
-    ("Mario", '2022-11-10', 12, 1),
-    ("Mario", '2023-10-09', 17, 2),
-    ("Mario", '2023-12-08', 15, 3),
-    ("Mario", '2022-11-10', 16, 3),
-    ("Luigi", '2023-07-10', 19, 2),
-    ("Luigi", '2022-09-10', 20, 1);
--- -- *--------------------------------------------------------------------------------------------
-INSERT INTO proveïdors (nom_proveïdor, adreça, telefon, fax, nif)
+INSERT INTO proveidors (nom_proveidor, adreça, telefon, fax, nif)
 VALUES 
     ("Alfa", "Carrer 3 num 5 08085 TER SPAIN", "932093129", "934054844", "47872216W"),
     ("Bravo", "Carrer 7 num 1 08090 BAD SPAIN", "932043129", "935054844", "47872211X"),
@@ -88,36 +79,52 @@ VALUES
     ("Mart", "Joaquim Costa 20, num 7 08013 BCN SPAIN", "913185977", "mart@mart.com", "47872216x", null),
     ("Saturn", "Elisabeths 30, num 2 08014 BCN SPAIN", "913185570", "saturn@saturn.com", "47872216S", "Mart");
 -- -- *--------------------------------------------------------------------------------------------
-INSERT INTO ulleres (id_proveïdor, marca, graduacio_esq, graduacio_dret, tipus_muntura, color_muntura, color_vidre_esq, color_vidre_dret, preu)
+INSERT INTO marques(nom_marca, id_proveidor)
+VALUES
+    ("TomFord",1),
+    ("PRADA",1),
+    ("Boss",2),
+    ("Vogue",3),
+    ("Emporio",4),
+    ("Reebok",5);
+INSERT INTO ulleres (marca_id, graduacio_esq, graduacio_dret, tipus_muntura, color_muntura, color_vidre_esq, color_vidre_dret, preu)
 VALUES 
-    (1, "TomFord", 2.5, 3.5, "metàl·lica", "blau", "blanc","verd fosc", 180.99),
-    (1, "TomFord", 2.5, 3.5, "pasta", "groc", "blanc","gris clar", 90.99),
-    (1, "TomFord", 2.5, 3.5, "flotant", "lila", "blanc","verd fosc", 70.99),
-    (2, "PRADA", -2,-2, "metàl·lica", "vermell", "daurat","verd clar", 150.99),
-    (2, "PRADA", -2,-2, "pasta", "negre", "daurat","groc clar", 125.99),
-    (3, "Vogue", -4,-3.25, "pasta", "blau", "platejat","blau clar", 200.99),
-    (3, "Vogue", -4,-3.75, "flotant", "coral", "platejat","verd fosc", 190.99),
-    (4, "Emporio", -3.5,-3.5, "metàl·lica", "sepia", "negre","blau fosc", 50.99),
-    (4, "Emporio", -3.5,-3.5, "flotant", "taronja", "negre","verd fosc", 60.99),
-    (5, "Reebok", -8.5,-2.5, "pasta", "negre", "negre","blau fosc", 60.99),
-    (5, "Reebock", -1.5,-0.5, "flotant", "blanc", "negre","gris clar", 60.99);
+    (1, 2.5, 3.5, "metàl·lica", "blau", "blanc","verd fosc", 180.99),
+    (1, 2.5, 3.5, "pasta", "groc", "blanc","gris clar", 90.99),
+    (1, 2.5, 3.5, "flotant", "lila", "blanc","verd fosc", 70.99),
+    (2, -2,-2, "metàl·lica", "vermell", "daurat","verd clar", 150.99),
+    (2, -2,-2, "pasta", "negre", "daurat","groc clar", 125.99),
+    (3, -4,-3.25, "pasta", "blau", "platejat","blau clar", 200.99),
+    (3, -4,-3.75, "flotant", "coral", "platejat","verd fosc", 190.99),
+    (4, -3.5,-3.5, "metàl·lica", "sepia", "negre","blau fosc", 50.99),
+    (4, -3.5,-3.5, "flotant", "taronja", "negre","verd fosc", 60.99),
+    (5, -8.5,-2.5, "pasta", "negre", "negre","blau fosc", 60.99),
+    (5, -1.5,-0.5, "flotant", "blanc", "negre","gris clar", 60.99);
+-- *--------------------------------------------------------------------------------------------
+INSERT INTO vendes (empleat_venedor, data_venda, id_ullera_venuda, id_client)
+VALUES
+    ("Mario", '2022-11-10', 1, 1),
+    ("Mario", '2023-10-09', 5, 2),
+    ("Mario", '2023-12-08', 2, 3),
+    ("Mario", '2022-11-10', 3, 3),
+    ("Luigi", '2023-07-10', 3, 2),
+    ("Luigi", '2022-09-10', 4, 1);
 -- *--------------------------------------------------------------------------------------------
 -- *QUERIES de comprovació
 -- *--------------------------------------------------------------------------------------------
 -- *Llista el total de compres d’un client/a.
-SELECT * FROM vendes WHERE id_client=1 ORDER BY empleat_venedor ASC;
--- O BÉ ↓↓
-SELECT * FROM vendes ven JOIN clients cli ON ven.id_client=cli.client_id WHERE cli.nom="Mercuri";
+SELECT ven.venda_id, cli.nom AS nom_client, ven.data_venda, ven.id_ullera_venuda, ven.empleat_venedor FROM vendes ven JOIN clients cli ON ven.id_client=cli.client_id WHERE cli.nom="Mercuri";
 
 -- *Llista les diferents ulleres que ha venut un empleat durant un any.
 SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND YEAR(data_venda) = 2022;
 SELECT * FROM vendes WHERE empleat_venedor = "Luigi" AND YEAR(data_venda) = 2023;
 
--- *Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
-
-SELECT DISTINCT pro.nom_proveïdor FROM proveïdors pro JOIN ulleres ull ON pro.proveidor_id=ull.id_proveïdor JOIN vendes ven ON ull.ulleres_id = ven.id_ullera_venuda;
-
--- DISTINCT elimina duplicats
--- Realitzem unió entre la taula vendes i ulleres sota el criteri estipulat a la keyword ON
--- Es llisten tots els proveïdors les ulleres dels quals figuren en vendes. 
--- No hi figura el proeïdor "Echo" car d'ell no s'ha venut cap ullera (marca Reebok)
+-- *Llista els diferents proveidors que han subministrat ulleres venudes amb èxit per l'òptica.
+SELECT DISTINCT pro.nom_proveidor, ven.data_venda, mar.nom_marca, ull.ulleres_id
+FROM vendes ven
+JOIN ulleres ull
+ON ven.id_ullera_venuda = ull.ulleres_id
+JOIN marques mar
+ON ull.marca_id
+JOIN proveidors pro
+ON mar.id_proveidor = pro.proveidor_id GROUP BY pro.nom_proveidor;
