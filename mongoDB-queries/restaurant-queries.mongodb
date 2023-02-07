@@ -76,7 +76,7 @@ use('restaurant');
 // db.restaurant.find({$and:[{"grades.1.grade":"A"},{"grades.1.score":9},{"grades.1.date":{$elemMatch:{"$date":"2014-08-11T00:00:00Z"}}}]},{_id:1, name:1, grades:1})
 
 //* Escriu una consulta per trobar el restaurant_id, name, adreça i ubicació geogràfica per a aquells restaurants on el segon element de l'array coord conté un valor entre 42 i 52.
-db.restaurant.find({"address.coord.1":{$gt:42,$lt:52}},{_id:1, name:1, "address.street":1, "address.coord":1})
+// db.restaurant.find({"address.coord.1":{$gt:42,$lt:52}},{_id:1, name:1, "address.street":1, "address.coord":1})
 
 //* Escriu una consulta per organitzar els restaurants per nom en ordre ascendent.
 // db.getCollection('restaurant').find().sort({name:1})

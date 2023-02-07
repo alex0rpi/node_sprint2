@@ -1,5 +1,5 @@
 /* Creació de la db optica */
-use('optica');
+use('OPTICA');
 
 db.proveidors.insertMany([
   {

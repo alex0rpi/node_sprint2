@@ -116,14 +116,14 @@ VALUES
     ("beguda",NULL,"cola", "soda sugar black water", "C/users/pepito/documents/img/pizzes/cola.png", 2.50),
     ("beguda",NULL,"water", "plastic bottle water 75cl", "C/users/pepito/documents/img/pizzes/water.png", 3),
     ("hamburguesa", NULL, "tofu_burguer", "for anyone who likes this kind of thing", "C/users/pepito/documents/img/pizzes/tofu.png", 10.90),
-    ("hamburguesa", NULL, "chicken burguer", "the healthiest one, you get thinner garanteed", "C/users/pepito/documents/img/pizzes/chicken.png", 10.90),
-    ("hamburguesa", NULL, "250g good burger", "from happy cows", "C/users/pepito/documents/img/pizzes/good.png", 10.90),
-    ("pizza", 1, "manchego", "all the cheese in the world", "C/users/pepito/documents/img/pizzes/manchego.png", 8.90),
-    ("pizza", 1, "boloñesa", "dont have macarroni but at least youll be happy", "C/users/pepito/documents/img/pizzes/boloñesa.png", 6.90),
-    ("pizza", 2, "tomatini", "tasty delicious local vegetables", "C/users/pepito/documents/img/pizzes/tomatini.png", 14.90),
-    ("pizza", 2, "tofu", "not so tasty but some people order this", "C/users/pepito/documents/img/pizzes/tofu.png", 12.90),
-    ("pizza", 3, "gorlomi", "this is the one", "C/users/pepito/documents/img/pizzes/gorlomi.png", 13.90),
-    ("pizza", 3, "decoco", "for hipsters who have extra cash", "C/users/pepito/documents/img/pizzes/decoco.png", 16.90);
+    ("hamburguesa", NULL, "chicken_burguer", "the healthiest one, you get thinner garanteed", "C/users/pepito/documents/img/pizzes/chicken.png", 10.90),
+    ("hamburguesa", NULL, "250g_good_burger", "from happy cows", "C/users/pepito/documents/img/pizzes/good.png", 10.90),
+    ("pizza", 1, "manchego", "all_the_cheese_in_the_world", "C/users/pepito/documents/img/pizzes/manchego.png", 8.90),
+    ("pizza", 1, "boloñesa", "dont_have_macarroni_but_at_least_youll_be_happy", "C/users/pepito/documents/img/pizzes/boloñesa.png", 6.90),
+    ("pizza", 2, "tomatini", "tasty_delicious_local_vegetables", "C/users/pepito/documents/img/pizzes/tomatini.png", 14.90),
+    ("pizza", 2, "tofu", "not_so_tasty_but_some_people_order_this", "C/users/pepito/documents/img/pizzes/tofu.png", 12.90),
+    ("pizza", 3, "gorlomi", "this_is_the_one", "C/users/pepito/documents/img/pizzes/gorlomi.png", 13.90),
+    ("pizza", 3, "decoco", "for_hipsters_who_have_extra_cash", "C/users/pepito/documents/img/pizzes/decoco.png", 16.90);
 INSERT INTO comandes (client_id, data_hora, modalitat, preu_total, botiga_id, repartidor_id, hora_repartiment)
 VALUES
     (1, "2023-01-01 22:10:10", "repartiment", 20.00, 1, 2, "11:00:00"),
