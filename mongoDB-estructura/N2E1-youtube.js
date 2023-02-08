@@ -42,7 +42,7 @@ db.usuaris.insertMany([
   },
   { _id: ObjectId('0000000000000000000000b2'), email: '', password: '', nom_usuari: '', data_naixement: '', sexe: '', pais: '', codi_postal: '',
     videos_user: [
-        {_id_video: ObjectId('0000000000000000000000c4')}
+        {_id_video: ObjectId('0000000000000000000000c3')}
     ],
     playlists: [
       { _id: ObjectId('0000000000000000000000d1'), nom_playlist: '', data_creacio:ISODate(), estat: '',

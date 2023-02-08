@@ -9,9 +9,9 @@ db.proveidors.insertMany([
     fax: '934054844',
     nif: '47872216W',
     ulleres: [
-      { _id: ObjectId("000000000000000000000001") , marca:"TomFord", graduacio_esq:2.5, graduacio_dret:3.5, tipus_muntura:"metàl·lica", color_muntura:"blau", color_vidre_esq:"blanc", color_vidre_dret:"verd fosc", preu:180.99},
-      { _id: ObjectId("000000000000000000000002") , marca:"TomFord", graduacio_esq:2.5, graduacio_dret:3.5, tipus_muntura:"pasta", color_muntura:"groc", color_vidre_esq:"blanc", color_vidre_dret:"gris clar", preu:90.99},
-      { _id: ObjectId("000000000000000000000003") , marca:"TomFord", graduacio_esq:2.5, graduacio_dret:3.5, tipus_muntura:"flotant", color_muntura:"lila", color_vidre_esq:"blanc", color_vidre_dret:"verd fosc", preu:70.99},
+      { _id: ObjectId("000000000000000000000001") , marca:"TomFord", graduacio:[2.5,3.5], tipus_muntura:"metàl·lica", color_muntura:"blau", color_vidre_esq:"blanc", color_vidre_dret:"verd fosc", preu:180.99},
+      { _id: ObjectId("000000000000000000000002") , marca:"TomFord", graduacio:[2.5,3.5], tipus_muntura:"pasta", color_muntura:"groc", color_vidre_esq:"blanc", color_vidre_dret:"gris clar", preu:90.99},
+      { _id: ObjectId("000000000000000000000003") , marca:"TomFord", graduacio:[2.5,3.5], tipus_muntura:"flotant", color_muntura:"lila", color_vidre_esq:"blanc", color_vidre_dret:"verd fosc", preu:70.99},
     ],
   },
   {
@@ -21,8 +21,8 @@ db.proveidors.insertMany([
     fax: '935054844',
     nif: '47872211X',
     ulleres: [
-      { _id: ObjectId("000000000000000000000004") , marca:"PRADA", graduacio_esq:-2, graduacio_dret:-2, tipus_muntura:"metàl·lica", color_muntura:"vermell", color_vidre_esq:"daurat", color_vidre_dret:"verd clar", preu:150.99},
-      { _id: ObjectId("000000000000000000000005") , marca:"PRADA", graduacio_esq:-2, graduacio_dret:-2, tipus_muntura:"pasta", color_muntura:"negre", color_vidre_esq:"daurat", color_vidre_dret:"groc clar", preu:125.99},
+      { _id: ObjectId("000000000000000000000004") , marca:"PRADA", graduacio:[-2,-2], tipus_muntura:"metàl·lica", color_muntura:"vermell", color_vidre_esq:"daurat", color_vidre_dret:"verd clar", preu:150.99},
+      { _id: ObjectId("000000000000000000000005") , marca:"PRADA", graduacio:[-2,-2], tipus_muntura:"pasta", color_muntura:"negre", color_vidre_esq:"daurat", color_vidre_dret:"groc clar", preu:125.99},
     ],
   },
   {
@@ -32,8 +32,8 @@ db.proveidors.insertMany([
     fax: '932054844',
     nif: '47872216Q',
     ulleres: [
-      { _id: ObjectId("000000000000000000000006") , marca:"Vogue", graduacio_esq:-4, graduacio_dret:-3.25, tipus_muntura:"pasta", color_muntura:"blau", color_vidre_esq:"platejat", color_vidre_dret:"blau clar", preu:200.99},
-      { _id: ObjectId("000000000000000000000007") , marca:"Vogue", graduacio_esq:-4, graduacio_dret:-3.75, tipus_muntura:"flotant", color_muntura:"coral", color_vidre_esq:"platejat", color_vidre_dret:"verd fosc", preu:190.99},
+      { _id: ObjectId("000000000000000000000006") , marca:"Vogue", graduacio:[-4,-3.25], tipus_muntura:"pasta", color_muntura:"blau", color_vidre_esq:"platejat", color_vidre_dret:"blau clar", preu:200.99},
+      { _id: ObjectId("000000000000000000000007") , marca:"Vogue", graduacio:[-4,-3.75], tipus_muntura:"flotant", color_muntura:"coral", color_vidre_esq:"platejat", color_vidre_dret:"verd fosc", preu:190.99},
     ],
   },
   {
@@ -43,8 +43,8 @@ db.proveidors.insertMany([
     fax: '932054845',
     nif: '47872216Y',
     ulleres: [
-      { _id: ObjectId("000000000000000000000008") , marca:"Emporio", graduacio_esq:-3.5, graduacio_dret:-3.5, tipus_muntura:"metàl·lica", color_muntura:"sepia", color_vidre_esq:"negre", color_vidre_dret:"blau fosc", preu:50.99},
-      { _id: ObjectId("000000000000000000000009") , marca:"Emporio", graduacio_esq:-3.5, graduacio_dret:-3.5, tipus_muntura:"flotant", color_muntura:"taronja", color_vidre_esq:"negre", color_vidre_dret:"verd fosc", preu:60.99},
+      { _id: ObjectId("000000000000000000000008") , marca:"Emporio", graduacio:[-3.5,-3.5], tipus_muntura:"metàl·lica", color_muntura:"sepia", color_vidre_esq:"negre", color_vidre_dret:"blau fosc", preu:50.99},
+      { _id: ObjectId("000000000000000000000009") , marca:"Emporio", graduacio:[-3.5,-3.5], tipus_muntura:"flotant", color_muntura:"taronja", color_vidre_esq:"negre", color_vidre_dret:"verd fosc", preu:60.99},
     ],
   },
   {
@@ -54,8 +54,8 @@ db.proveidors.insertMany([
     fax: '952054845',
     nif: '47872216E',
     ulleres: [
-      { _id:  ObjectId("000000000000000000000010"), marca:"Reebock", graduacio_esq:-8.5, graduacio_dret:-2.5, tipus_muntura:"pasta", color_muntura:"negre", color_vidre_esq:"negre", color_vidre_dret:"gris clar", preu:60.99},
-      { _id:  ObjectId("000000000000000000000011"), marca:"Reebock", graduacio_esq:-1.5, graduacio_dret:-0.5, tipus_muntura:"flotant", color_muntura:"blanc", color_vidre_esq:"negre", color_vidre_dret:"gris clar", preu:60.99},
+      { _id:  ObjectId("000000000000000000000010"), marca:"Reebock", graduacio:[-8.5,-2.5], tipus_muntura:"pasta", color_muntura:"negre", color_vidre_esq:"negre", color_vidre_dret:"gris clar", preu:60.99},
+      { _id:  ObjectId("000000000000000000000011"), marca:"Reebock", graduacio:[-1.5,-0.5], tipus_muntura:"flotant", color_muntura:"blanc", color_vidre_esq:"negre", color_vidre_dret:"gris clar", preu:60.99},
     ],
   },
 ]);
