@@ -1,4 +1,4 @@
--- Active: 1675784715320@@127.0.0.1@3306@optica_cul_ampolla
+-- Active: 1675805696049@@127.0.0.1@3306@optica_cul_ampolla
 DROP DATABASE optica_cul_ampolla;
 CREATE SCHEMA IF NOT EXISTS optica_cul_ampolla;
 USE optica_cul_ampolla;
@@ -114,6 +114,8 @@ VALUES
 -- *--------------------------------------------------------------------------------------------
 -- *Llista el total de compres d’un client/a.
 SELECT ven.venda_id, cli.nom AS nom_client, ven.data_venda, ven.id_ullera_venuda, ven.empleat_venedor FROM vendes ven JOIN clients cli ON ven.id_client=cli.client_id WHERE cli.nom="Mercuri";
+-- El número total ⬇ ⬇ ⬇
+SELECT COUNT(ven.venda_id) FROM vendes ven JOIN clients cli ON ven.id_client=cli.client_id WHERE cli.nom="Mercuri";
 
 -- *Llista les diferents ulleres que ha venut un empleat durant un any.
 SELECT * FROM vendes WHERE empleat_venedor = "Mario" AND YEAR(data_venda) = 2022;

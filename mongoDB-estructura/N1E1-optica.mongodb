@@ -107,3 +107,14 @@ db.clients.insertMany([
     vendes: [],
   },
 ])
+
+// Llista el total de compres d’un client/a.
+// db.clients.find({ nom: "Mercuri" }, { vendes: 1 })
+
+//* Llista les diferents ulleres que ha venut un empleat durant un any.
+// db.clients.find({vendes:{$elemMatch:{empleat_venedor:"Mario"}}}, {vendes:{empleat_venedor:1}, vendes:{_id_ullera:1}})
+// db.clients.find({'vendes.empleat_venedor':"Luigi"}, {'vendes._id_ullera':1, 'vendes.empleat_venedor':1})
+// db.clients.find({vendes:{$elemMatch:{empleat_venedor:"Luigi"}}}, {'vendes._id_ullera':1, 'vendes.empleat_venedor':1})
+
+//* Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
+// db.clients.find({},{"proveidors.nom":1})
