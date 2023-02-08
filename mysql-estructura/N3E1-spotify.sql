@@ -60,14 +60,14 @@ CREATE TABLE playlists(
 );
 
 CREATE TABLE usuari_esborra_playlist(
-    /* Realment cal aquesta taula??? */
+    /* L'Oriol diu que puc esborrar aquesta taula, que no la necessitem.*/
     playlist_id INT UNSIGNED,
     user_id INT UNSIGNED,
     date_deleted DATE NOT NULL,
     PRIMARY KEY (playlist_id, user_id),
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id),
     FOREIGN KEY (user_id) REFERENCES playlists(owner_id)
-    /* Només l'owner de la playlist pot esborrar-la */
+    /* Només l'owner de la playlist pot esborrar la playlist */
 );
 CREATE TABLE artistes(
     artist_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
