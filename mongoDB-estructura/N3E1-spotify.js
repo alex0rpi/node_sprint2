@@ -38,8 +38,14 @@ db.usuaris.insertMany([
         {id_song:ObjectId('000000000000000000000002')},
       ]}
     ],
+    songs_favorites:[
+      {_id_song:ObjectId('000000000000000000000002')}
+    ],
     albums_favorits:[
       {_id_album:ObjectId('0000000000000000000000a1')}
+    ],
+    artistes_seguits:[
+      {_id_artista:ObjectId('0000000000000000000000b1')}
     ],
     subscripcio:{ _id:ObjectId('1111111111111111111111a1'), data_inici:ISODate(), data_renovacio:ISODate(),
       forma_pagament:{ tipus:"targeta", numero_tarjeta:"", mes_caducitat:"", any_caducitat:"", codi_seguretat:"" },
@@ -54,11 +60,17 @@ db.usuaris.insertMany([
     playlists:[
       { owner_id:ObjectId('0000000000000000000000d2'), titol:"", num_songs:2, data_creacio:"", tipus_playlist:"",
       canciones:[
-        {id_song:ObjectId('000000000000000000000006')},
+        {id_song:ObjectId('000000000000000000000001')},
       ]}
+    ],
+    songs_favorites:[
+      {_id_song:ObjectId('0000000000000000000000a2')}
     ],
     albums_favorits:[
       {_id_album:ObjectId('0000000000000000000000a2')}
+    ],
+    artistes_seguits:[
+      {_id_artista:ObjectId('0000000000000000000000b2')}
     ],
     subscripcio:{ _id:ObjectId('1111111111111111111111a2'), data_inici:ISODate(), data_renovacio:ISODate(),
       forma_pagament:{ tipus:"paypal", paypal_id:"", paypal_username:"" },
