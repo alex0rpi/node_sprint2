@@ -42,17 +42,17 @@ db.clients.insertMany([
         {prod:ObjectId("000000000000000000000d01"), qty:1},
         {prod:ObjectId("000000000000000000000d10"), qty:2},
         ],
-        data_hora:ISODate(), tipus:"repartiment", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b01'), repart_id:ObjectId('000000000000000000000a01'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"repartiment", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b01'), repart_id:ObjectId('000000000000000000000a01'), hora_rep:ISODate()},
     {_id: ObjectId("000000000000000000000c02"), productes:[
         {prod:ObjectId("000000000000000000000d03"), qty:2},
         {prod:ObjectId("000000000000000000000d05"), qty:1},
         ],
-        data_hora:ISODate(), tipus:"recollida", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b01'), repart_id:ObjectId('000000000000000000000a01'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"recollida", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b01'), repart_id:ObjectId('000000000000000000000a01'), hora_rep:ISODate()},
     {_id: ObjectId("000000000000000000000c03"), productes:[
         {prod:ObjectId("000000000000000000000d02"), qty:3},
         {prod:ObjectId("000000000000000000000d08"), qty:2},
         ],
-        data_hora:ISODate(), tipus:"recollida", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b01'), repart_id:ObjectId('000000000000000000000a01'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"recollida", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b01'), repart_id:ObjectId('000000000000000000000a01'), hora_rep:ISODate()},
     ]},
   { nom:"Luigi", cognoms:"Land", adreça:"Soda Jungle 3", cp:"08018", localitat:"Hospitalet", provincia:"BCN", tel:"899999999",
   comandes:[
@@ -60,7 +60,7 @@ db.clients.insertMany([
         {prod:ObjectId("000000000000000000000d06"), qty:2},
         {prod:ObjectId("000000000000000000000d07"), qty:1},
         ],
-        data_hora:ISODate(), tipus:"domicili", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b02'), repart_id:ObjectId('000000000000000000000a02'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"domicili", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b02'), repart_id:ObjectId('000000000000000000000a02'), hora_rep:ISODate()},
     ]},
   { nom:"Toad", cognoms:"Bros", adreça:"Lyer Cake Desert", cp:"08017", localitat:"Hospitalet", provincia:"BCN", tel:"799999999",
   comandes:[
@@ -68,12 +68,12 @@ db.clients.insertMany([
         {prod:ObjectId("000000000000000000000d04"), qty:2},
         {prod:ObjectId("000000000000000000000d11"), qty:1},
         ],
-        data_hora:ISODate(), tipus:"repartiment", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b02'), repart_id:ObjectId('000000000000000000000a02'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"repartiment", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b02'), repart_id:ObjectId('000000000000000000000a02'), hora_rep:ISODate()},
     {_id: ObjectId("000000000000000000000c06"), productes:[
         {prod:ObjectId("000000000000000000000d05"), qty:2},
         {prod:ObjectId("000000000000000000000d07"), qty:1},
         ],
-        data_hora:ISODate(), tipus:"repartiment", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b02'), repart_id:ObjectId('000000000000000000000a02'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"repartiment", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b02'), repart_id:ObjectId('000000000000000000000a02'), hora_rep:ISODate()},
     ]},
   { nom:"Bowser", cognoms:"Galaxy", adreça:"Frosted Glacier 6", cp:"08016", localitat:"Cornella", provincia:"BCN", tel:"699999999",
   comandes:[
@@ -81,7 +81,7 @@ db.clients.insertMany([
         {prod:ObjectId("000000000000000000000d06"), qty:3},
         {prod:ObjectId("000000000000000000000d02"), qty:2},
         ],
-        data_hora:ISODate(), tipus:"recollida", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b03'), repart_id:ObjectId('000000000000000000000a03'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"recollida", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b03'), repart_id:ObjectId('000000000000000000000a03'), hora_rep:ISODate()},
     ]},
   { nom:"Goomba", cognoms:"World", adreça:"Sparkling Waters 8", cp:"08015", localitat:"Palamos", provincia:"BCN", tel:"599999999",
   comandes:[
@@ -89,7 +89,7 @@ db.clients.insertMany([
         {prod:ObjectId("000000000000000000000d11"), qty:2},
         {prod:ObjectId("000000000000000000000d02"), qty:1},
         ],
-        data_hora:ISODate(), tipus:"recollida", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b03'), repart_id:ObjectId('000000000000000000000a03'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"recollida", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b03'), repart_id:ObjectId('000000000000000000000a03'), hora_rep:ISODate()},
     ]},
   { nom:"Turtle", cognoms:"Stars", adreça:"Peach Castle 10", cp:"08014", localitat:"Calonge", provincia:"GIR", tel:"499999999",
   comandes:[
@@ -97,6 +97,6 @@ db.clients.insertMany([
         {prod:ObjectId("000000000000000000000d03"), qty:2},
         {prod:ObjectId("000000000000000000000d12"), qty:1},
         ],
-        data_hora:ISODate(), tipus:"repartiment", preu_total:30.00, id_botiga:ObjectId('000000000000000000000b03'), repart_id:ObjectId('000000000000000000000a03'), hora_rep:ISODate()},
+        data_hora:ISODate(), tipus:"repartiment", preu_total:NumericDecimal("30.00"), id_botiga:ObjectId('000000000000000000000b03'), repart_id:ObjectId('000000000000000000000a03'), hora_rep:ISODate()},
     ]},
 ]);
